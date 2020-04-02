@@ -6,8 +6,15 @@ const game = new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'phaser-example',
   backgroundColor: '#000',
-  width: 1920,
-  height: 1080,
+  width: 900,
+  height: 900,
+  physics: {
+    default: 'arcade',
+    arcade: {
+      debug: false,
+      gravity: { y: 0 },
+    },
+  },
   scene: Object.values(scenes),
   scale: {
     mode: Phaser.Scale.FIT,

@@ -16,6 +16,14 @@ export default class extends Phaser.Scene {
       )
     })
 
+    this.load.image('rocket', '/assets/images/rocket.png')
+    this.load.image('smoke', '/assets/images/smoke.png')
+
+    this.load.spritesheet('explosion', '/assets/images/explosion.png', {
+      frameWidth: 128,
+      frameHeight: 128,
+    })
+
     this.load.on('complete', () => {
       progress.destroy()
       this.scene.start('Game')
