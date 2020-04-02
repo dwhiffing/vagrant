@@ -9,6 +9,8 @@ export default class extends Phaser.Scene {
   create() {
     this.missileGroup = new Missiles(this)
     this.explosionGroup = new Explosions(this)
+    this.activeX = 300
+    this.activeY = 300
 
     this.input.on('pointermove', pointer => {
       this.activeX = pointer.x
@@ -44,7 +46,7 @@ export default class extends Phaser.Scene {
   }
 
   spawn() {
-    if (this.missileGroup.countActive(true) < 20) {
+    if (this.missileGroup.countActive(true) < 5) {
       const containerWidth = this.cameras.main.width
       const containerHeight = this.cameras.main.height
       let x = Phaser.Math.RND.between(50, containerWidth - 50)

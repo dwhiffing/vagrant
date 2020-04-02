@@ -8,6 +8,10 @@ export class Missiles extends Phaser.Physics.Arcade.Group {
       active: false,
       visible: false,
       classType: Missile,
+      setXY: {
+        x: -100,
+        y: -100,
+      },
     })
   }
   fireMissile(x, y) {

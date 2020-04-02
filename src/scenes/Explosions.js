@@ -8,6 +8,10 @@ export class Explosions extends Phaser.Physics.Arcade.Group {
       active: false,
       visible: false,
       classType: Explosion,
+      setXY: {
+        x: -100,
+        y: -100,
+      },
     })
   }
   makeExplosion(x, y) {

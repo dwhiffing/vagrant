@@ -17,7 +17,7 @@ export default class extends Phaser.Scene {
     })
 
     this.load.image('rocket', '/assets/images/rocket.png')
-    this.load.image('smoke', '/assets/images/smoke.png')
+    this.load.image('smoke', '/assets/images/yellow.png')
 
     this.load.spritesheet('explosion', '/assets/images/explosion.png', {
       frameWidth: 128,
