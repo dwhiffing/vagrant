@@ -5,7 +5,7 @@ export default class BehaviorPlugin extends Phaser.Plugins.BasePlugin {
     super('BehaviorPlugin', pluginManager)
   }
 
-  init(config = {}) {
+  init() {
     this._system = new BehaviorSystem()
   }
 

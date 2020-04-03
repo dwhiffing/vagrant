@@ -1,5 +1,5 @@
-import { Missiles } from './Missiles'
-import { Explosions } from './Explosions'
+import { Missiles } from '../sprites/Missiles'
+import { Explosions } from '../sprites/Explosions'
 
 export default class extends Phaser.Scene {
   constructor() {

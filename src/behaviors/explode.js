@@ -6,17 +6,13 @@ export const EXPLODE = {
   },
 
   update: function(entity, opts, game, dt) {
+    const { x, y } = entity.scene.input.activePointer
     const missileGroup = entity.scene.missileGroup
     missileGroup
       .getChildren()
       .filter(s => s.active)
       .forEach(function(m) {
-        var distance = Phaser.Math.Distance.Between(
-          m.x,
-          m.y,
-          missileGroup.activeX,
-          missileGroup.activeY,
-        )
+        const distance = Phaser.Math.Distance.Between(m.x, m.y, x, y)
         if (distance < 50) {
           m.destroy()
           entity.scene.explosionGroup.makeExplosion(m.x, m.y)
