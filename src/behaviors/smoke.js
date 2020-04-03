@@ -6,6 +6,7 @@ export const SMOKE = {
     lifespan: { min: 200, max: 300 },
     alpha: { start: 0.6, end: 0 },
   },
+
   $create: function(entity, options) {
     var particles = entity.scene.add.particles('smoke')
     entity.smoke = particles.createEmitter({

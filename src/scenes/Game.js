@@ -1,5 +1,4 @@
 import { Missiles } from '../sprites/Missiles'
-import { Explosions } from '../sprites/Explosions'
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -9,7 +8,6 @@ export default class extends Phaser.Scene {
   create() {
     this.behavior = this.plugins.get('BehaviorPlugin')
     this.missileGroup = new Missiles(this)
-    this.explosionGroup = new Explosions(this)
 
     this.time.addEvent({
       delay: 500,

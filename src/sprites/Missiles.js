@@ -1,16 +1,10 @@
 import { Missile } from './Missile'
 
+const AVOID_DISTANCE = 30
+
 export class Missiles extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
     super(scene.physics.world, scene)
-    this.activeX = 300
-    this.activeY = 300
-
-    this.scene.input.on('pointermove', pointer => {
-      this.activeX = pointer.x
-      this.activeY = pointer.y
-    })
-
     this.createMultiple({
       frameQuantity: 20,
       key: 'rocket',
@@ -24,11 +18,13 @@ export class Missiles extends Phaser.Physics.Arcade.Group {
     })
   }
 
-  fireMissile(x, y) {
-    let bullet = this.getFirstDead(false)
-    if (bullet) {
-      bullet.fire(x, y)
-    }
+  getClosest(missile) {
+    return this.getChildren().find(
+      m =>
+        m !== missile &&
+        Phaser.Math.Distance.Between(missile.x, missile.y, m.x, m.y) <
+          AVOID_DISTANCE,
+    )
   }
 
   spawn() {
@@ -42,7 +38,10 @@ export class Missiles extends Phaser.Physics.Arcade.Group {
         x = Math.random() < 0.5 ? containerWidth + 50 : -50
         y = Phaser.Math.RND.between(50, containerHeight - 50)
       }
-      this.fireMissile(x, y)
+      let bullet = this.getFirstDead(false)
+      if (bullet) {
+        bullet.fire(x, y)
+      }
     }
   }
 }
