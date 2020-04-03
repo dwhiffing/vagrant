@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import BehaviorPlugin from './behavior'
 import * as scenes from './scenes'
 
 const game = new Phaser.Game({
@@ -8,6 +9,9 @@ const game = new Phaser.Game({
   backgroundColor: '#000',
   width: 900,
   height: 900,
+  plugins: {
+    global: [{ key: 'BehaviorPlugin', plugin: BehaviorPlugin, start: true }],
+  },
   physics: {
     default: 'arcade',
     arcade: {
