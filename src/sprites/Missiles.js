@@ -1,7 +1,5 @@
 import { Missile } from './Missile'
 
-const AVOID_DISTANCE = 30
-
 export class Missiles extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
     super(scene.physics.world, scene)
@@ -11,10 +9,7 @@ export class Missiles extends Phaser.Physics.Arcade.Group {
       active: false,
       visible: false,
       classType: Missile,
-      setXY: {
-        x: -100,
-        y: -100,
-      },
+      setXY: { x: -100, y: -100 },
     })
   }
 
@@ -22,13 +17,12 @@ export class Missiles extends Phaser.Physics.Arcade.Group {
     return this.getChildren().find(
       m =>
         m !== missile &&
-        Phaser.Math.Distance.Between(missile.x, missile.y, m.x, m.y) <
-          AVOID_DISTANCE,
+        Phaser.Math.Distance.Between(missile.x, missile.y, m.x, m.y) < 30,
     )
   }
 
   spawn() {
-    if (this.countActive(true) < 1) {
+    if (this.countActive(true) < 20) {
       const containerWidth = this.scene.cameras.main.width
       const containerHeight = this.scene.cameras.main.height
       let x = Phaser.Math.RND.between(50, containerWidth - 50)

@@ -1,34 +1,51 @@
 import { Explosion } from '../sprites/Explosion'
 
+const withinDistance = (entity, other, distance) =>
+  Phaser.Math.Distance.Between(entity.x, entity.y, other.x, other.y) < distance
+
 export const EXPLODE = {
   options: {
-    angle: 0,
-    speed: 100,
-    rotate: true,
+    getTargets: () => ({}),
+    destroyTarget: false,
+    explosionDelay: 0,
+    triggerRadius: 50,
+    explosionRadius: 50,
   },
 
-  $create: function(entity) {
-    entity.explosionGroup = new Explosions(entity.scene)
+  $create: function(entity, opts) {
+    entity.explosionGroup = new Explosions(entity.scene, {
+      scale: opts.explosionRadius / 80,
+    })
+    entity.getTargets = opts.getTargets
   },
 
   update: function(entity, opts, game, dt) {
-    const { x, y } = entity.scene.input.activePointer
-    const missileGroup = entity.scene.missileGroup
-    missileGroup
-      .getChildren()
-      .filter(s => s.active)
-      .forEach(function(m) {
-        const distance = Phaser.Math.Distance.Between(m.x, m.y, x, y)
-        if (distance < 50) {
-          m.destroy()
-          entity.explosionGroup.makeExplosion(m.x, m.y)
+    if (!entity.active) return
+    const withinTriggerRadius = entity
+      .getTargets()
+      .filter(t => withinDistance(entity, t, opts.triggerRadius))
+
+    if (withinTriggerRadius.length === 0) return
+
+    entity.setActive(false)
+    entity.scene.time.addEvent({
+      delay: opts.explosionDelay,
+      callback: () => {
+        entity.explosionGroup.makeExplosion(entity.x, entity.y)
+        entity.destroy()
+        if (opts.destroyTargets) {
+          entity
+            .getTargets()
+            .filter(t => withinDistance(entity, t, opts.explosionRadius))
+            .forEach(t => t.destroy())
         }
-      }, missileGroup)
+      },
+    })
   },
 }
 
 class Explosions extends Phaser.Physics.Arcade.Group {
-  constructor(scene) {
+  constructor(scene, opts = { scale: 1 }) {
     super(scene.physics.world, scene)
     this.createMultiple({
       frameQuantity: 5,
@@ -41,11 +58,13 @@ class Explosions extends Phaser.Physics.Arcade.Group {
         y: -100,
       },
     })
+    this.scale = opts.scale
   }
   makeExplosion(x, y) {
     let explosion = this.getFirstDead(false)
     if (explosion) {
       explosion.fire(x, y)
+      explosion.scale = this.scale
     }
   }
 }

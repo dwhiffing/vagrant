@@ -7,7 +7,9 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
     this.turnCounter = 0
 
     scene.behavior.enable(this)
-    this.behaviors.set('explode', EXPLODE)
+    this.behaviors.set('explode', EXPLODE, {
+      getTargets: () => [this.scene.input.activePointer],
+    })
     this.behaviors.set('smoke', SMOKE)
     this.behaviors.set('moveTowardMouse', MOVE_TOWARD_MOUSE)
   }
