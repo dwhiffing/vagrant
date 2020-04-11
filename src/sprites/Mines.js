@@ -5,7 +5,7 @@ export class Mines extends Phaser.Physics.Arcade.Group {
     super(scene.physics.world, scene)
     this.createMultiple({
       frameQuantity: 20,
-      key: 'rocket',
+      key: 'mine',
       active: false,
       visible: false,
       classType: Mine,

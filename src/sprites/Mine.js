@@ -2,7 +2,7 @@ import { EXPLODE } from '../behaviors'
 
 export class Mine extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
-    super(scene, x, y, 'rocket')
+    super(scene, x, y, 'mine')
     this.setOrigin(0.5, 0.5)
 
     scene.behavior.enable(this)

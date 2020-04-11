@@ -16,6 +16,7 @@ export default class extends Phaser.Scene {
       )
     })
 
+    this.load.image('mine', '/assets/images/mine.png')
     this.load.image('rocket', '/assets/images/rocket.png')
     this.load.image('smoke', '/assets/images/yellow.png')
 
