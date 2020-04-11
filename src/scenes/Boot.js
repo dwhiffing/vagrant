@@ -18,7 +18,8 @@ export default class extends Phaser.Scene {
 
     this.load.image('bot', '/assets/images/bot.png')
     this.load.image('mine', '/assets/images/mine.png')
-    this.load.image('rocket', '/assets/images/rocket.png')
+    this.load.image('target', '/assets/images/target.png')
+    this.load.image('missile', '/assets/images/missile.png')
     this.load.image('smoke', '/assets/images/yellow.png')
 
     this.load.spritesheet('explosion', '/assets/images/explosion.png', {
