@@ -2,7 +2,7 @@ import { EXPLODE, SMOKE, MOVE_TOWARD_MOUSE } from '../behaviors'
 
 export class Missile extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
-    super(scene, x, y, 'rocket')
+    super(scene, x, y, 'missile')
     this.setOrigin(0.5, 0.5)
     this.turnCounter = 0
 

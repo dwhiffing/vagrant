@@ -75,7 +75,15 @@ export const MOVE_TOWARD_MOUSE = {
 
     targetAngle += Phaser.Math.DegToRad(entity.wobble)
 
-    if (entity.scene.missileGroup.getClosest(entity)) {
+    const closeMissle = entity.scene.missileGroup
+      .getChildren()
+      .find(
+        (m) =>
+          m !== entity &&
+          Phaser.Math.Distance.Between(entity.x, entity.y, m.x, m.y) < 30,
+      )
+
+    if (closeMissle) {
       targetAngle += Math.random() > 0.5 ? Math.PI / 2 : Math.PI / -2
     }
 
