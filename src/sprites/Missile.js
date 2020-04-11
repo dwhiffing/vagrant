@@ -13,6 +13,11 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
     this.behaviors.set('smoke', SMOKE)
     this.behaviors.set('moveToward', MOVE_TOWARD_TARGET, {
       target: scene.bot,
+      wobbleLimit: 20,
+      wobbleSpeed: 1500,
+      stallTimeout: 120,
+      getAvoidGroup: () => scene.missileGroup,
+      dampenSpeed: 0.5,
     })
   }
 

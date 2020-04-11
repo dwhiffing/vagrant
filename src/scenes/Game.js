@@ -10,8 +10,8 @@ export default class extends Phaser.Scene {
   create() {
     const { width, height } = this.game.canvas
     this.behavior = this.plugins.get('BehaviorPlugin')
-    const bot = new Bot(this, width / 2, height / 2)
-    this.bot = this.add.existing(bot)
+    this.target = this.add.sprite(width / 2, height / 2, 'target')
+    this.bot = this.add.existing(new Bot(this, width / 2, height / 2))
     this.mines = new Mines(this)
     this.missileGroup = new Missiles(this)
 
@@ -19,8 +19,13 @@ export default class extends Phaser.Scene {
       this.mines.spawn(x, y)
     })
 
+    this.input.on('pointermove', ({ x, y }) => {
+      this.target.x = x
+      this.target.y = y
+    })
+
     this.time.addEvent({
-      delay: 500,
+      delay: 1000,
       callback: this.missileGroup.spawn,
       callbackScope: this.missileGroup,
       loop: true,

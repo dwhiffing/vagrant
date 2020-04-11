@@ -1,4 +1,4 @@
-import { MOVE_TOWARD_MOUSE } from '../behaviors/moveToward'
+import { MOVE_TOWARD_TARGET } from '../behaviors/moveToward'
 
 export class Bot extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -14,7 +14,11 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     // })
 
     scene.behavior.enable(this)
-    this.behaviors.set('moveTowardMouse', MOVE_TOWARD_MOUSE, { speed: 1000 })
+    this.behaviors.set('moveTowardMouse', MOVE_TOWARD_TARGET, {
+      speed: 1000,
+      target: scene.target,
+      turnRate: 1000,
+    })
   }
 
   destroy() {
