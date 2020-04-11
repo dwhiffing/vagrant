@@ -4,26 +4,34 @@ export const MOVE_TOWARD_TARGET = {
   options: {
     speed: 550,
     turnRate: 5,
-    wobbleLimit: 15,
-    wobbleSpeed: 1000,
+    wobbleLimit: 0,
+    wobbleSpeed: 0,
+    stallTimeout: 0,
+    dampenSpeed: false,
+    getAvoidGroup: null,
   },
 
   $create: function (entity, opts) {
     entity.stallSpeed = 1
     entity.wobble = opts.wobbleLimit
+    entity.stallTimeout = opts.stallTimeout
     entity.turnRate = opts.turnRate
+    entity.dampenSpeed = opts.dampenSpeed
     entity.speed = opts.speed
-    entity.target = opts.target || entity.scene.input.activePointer
+    entity.target = opts.target
+    entity.getAvoidGroup = opts.getAvoidGroup
 
-    entity.scene.tweens.addCounter({
-      from: -opts.wobbleLimit,
-      to: opts.wobbleLimit,
-      duration: opts.wobbleSpeed,
-      loop: -1,
-      onUpdate: (tween) => {
-        entity.wobble = tween.getValue()
-      },
-    })
+    if (entity.wobble > 0) {
+      entity.scene.tweens.addCounter({
+        from: -opts.wobbleLimit,
+        to: opts.wobbleLimit,
+        duration: opts.wobbleSpeed,
+        loop: -1,
+        onUpdate: (tween) => {
+          entity.wobble = tween.getValue()
+        },
+      })
+    }
 
     entity.stall = () => {
       if (entity.preventStall) {
@@ -74,18 +82,23 @@ export const MOVE_TOWARD_TARGET = {
     const { x, y } = entity.target
     let targetAngle = Phaser.Math.Angle.Between(entity.x, entity.y, x, y)
 
-    targetAngle += Phaser.Math.DegToRad(entity.wobble)
+    if (entity.wobble > 0) {
+      targetAngle += Phaser.Math.DegToRad(entity.wobble)
+    }
 
-    const closeMissle = entity.scene.missileGroup
-      .getChildren()
-      .find(
-        (m) =>
-          m !== entity &&
-          Phaser.Math.Distance.Between(entity.x, entity.y, m.x, m.y) < 30,
-      )
+    if (entity.getAvoidGroup) {
+      const closeMissle = entity
+        .getAvoidGroup()
+        .getChildren()
+        .find(
+          (m) =>
+            m !== entity &&
+            Phaser.Math.Distance.Between(entity.x, entity.y, m.x, m.y) < 30,
+        )
 
-    if (closeMissle) {
-      targetAngle += Math.random() > 0.5 ? Math.PI / 2 : Math.PI / -2
+      if (closeMissle) {
+        targetAngle += Math.random() > 0.5 ? Math.PI / 2 : Math.PI / -2
+      }
     }
 
     const rDelta = wrapNumber(targetAngle - entity.rotation, -Math.PI, Math.PI)
@@ -104,42 +117,28 @@ export const MOVE_TOWARD_TARGET = {
 
       entity.turnCounterDirection = rDelta > 0 ? 0 : 1
 
-      if (entity.turnCounter++ > 120) {
+      if (
+        entity.stallTimeout > 0 &&
+        entity.turnCounter++ > entity.stallTimeout
+      ) {
         entity.stall()
       }
     }
 
     const speed =
-      Math.max(1 - Math.abs(rDelta), 0.5) * entity.speed * entity.stallSpeed
+      (entity.dampenSpeed > 0
+        ? Math.max(1 - Math.abs(rDelta), entity.dampenSpeed)
+        : 1) *
+      entity.speed *
+      entity.stallSpeed
 
-    entity.body.velocity.x = Math.cos(entity.rotation) * speed
-    entity.body.velocity.y = Math.sin(entity.rotation) * speed
-  },
-}
-
-export const MOVE_TOWARD_MOUSE = {
-  options: {
-    speed: 1000,
-  },
-
-  $create: function (entity, opts) {
-    entity.speed = opts.speed
-  },
-
-  update(entity) {
-    if (!entity.active) {
-      return
-    }
-
-    const { x, y } = entity.scene.input.activePointer
     const distance = Phaser.Math.Distance.Between(entity.x, entity.y, x, y)
     if (distance < entity.speed * 0.05) {
       entity.body.velocity.x = 0
       entity.body.velocity.y = 0
     } else {
-      const targetAngle = Phaser.Math.Angle.Between(entity.x, entity.y, x, y)
-      entity.body.velocity.x = Math.cos(targetAngle) * entity.speed
-      entity.body.velocity.y = Math.sin(targetAngle) * entity.speed
+      entity.body.velocity.x = Math.cos(entity.rotation) * speed
+      entity.body.velocity.y = Math.sin(entity.rotation) * speed
     }
   },
 }
