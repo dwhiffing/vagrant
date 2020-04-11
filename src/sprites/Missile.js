@@ -1,4 +1,4 @@
-import { EXPLODE, SMOKE, MOVE_TOWARD_MOUSE } from '../behaviors'
+import { EXPLODE, SMOKE, MOVE_TOWARD_TARGET } from '../behaviors'
 
 export class Missile extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -8,10 +8,12 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
 
     scene.behavior.enable(this)
     this.behaviors.set('explode', EXPLODE, {
-      getTargets: () => [this.scene.input.activePointer],
+      getTargets: () => [this.scene.bot],
     })
     this.behaviors.set('smoke', SMOKE)
-    this.behaviors.set('moveTowardMouse', MOVE_TOWARD_MOUSE)
+    this.behaviors.set('moveToward', MOVE_TOWARD_TARGET, {
+      target: scene.bot,
+    })
   }
 
   fire(x, y) {
