@@ -9,6 +9,11 @@ export default class extends Phaser.Scene {
     super({ key: 'Game' })
   }
 
+  init(opts) {
+    this.lives = opts.lives || 3
+    this.score = opts.score || 0
+  }
+
   create() {
     const { width, height } = this.game.canvas
     this.behavior = this.plugins.get('BehaviorPlugin')
@@ -21,12 +26,6 @@ export default class extends Phaser.Scene {
     )
     this.background.tileScaleX = 3.5
     this.background.tileScaleY = 3.5
-    this.healthBar = this.add.image(10, 10, 'healthBar')
-    this.healthBar.setOrigin(0)
-    this.healthBar.setScale(3)
-    this.healthBarIn = this.add.image(34, 30, 'healthBarIn')
-    this.healthBarIn.setOrigin(0)
-    this.healthBarIn.setScale(3)
 
     this.touchX = width / 2
     this.touchY = height / 2
@@ -43,6 +42,35 @@ export default class extends Phaser.Scene {
     this.bot = this.add.existing(new Bot(this, width / 2, height / 2))
 
     this.missileGroup = new Missiles(this)
+
+    this.healthBar = this.add.image(20, 20, 'healthBar')
+    this.healthBar.setOrigin(0)
+    this.healthBar.setScale(2.5)
+    this.healthBarIn = this.add.image(43, 39, 'healthBarIn')
+    this.healthBarIn.setOrigin(0)
+    this.healthBarIn.setScale(2.5)
+
+    this.life1 = this.add.image(width - 1 * 85 - 10, 20, 'life')
+    this.life1.setScale(3).setOrigin(0)
+    this.life2 = this.add.image(width - 2 * 85 - 10, 20, 'life')
+    this.life2.setScale(3).setOrigin(0)
+    this.life3 = this.add.image(width - 3 * 85 - 10, 20, 'life')
+    this.life3.setScale(3).setOrigin(0)
+    if (this.lives < 3) {
+      this.life3.setFrame(1)
+    }
+    if (this.lives < 2) {
+      this.life2.setFrame(1)
+    }
+
+    this.scoreText = this.add
+      .text(width / 2, 18, this.score, {
+        fontFamily: 'Space Mono',
+        fontSize: 60,
+        color: '#ffffff',
+      })
+      .setShadow(2, 2, '#333333', 2, false, true)
+    this.scoreText.setOrigin(0.5, 0)
 
     this.input.keyboard.on('keydown-SPACE', (event) => {
       this.mines.spawn(this.bot.x, this.bot.y)

@@ -41,7 +41,7 @@ export const EXPLODE = {
           entity
             .getTargets()
             .filter((t) => withinDistance(entity, t, opts.explosionRadius))
-            .forEach((t) => t.destroy())
+            .forEach((t) => t.destroy({ shouldScore: true }))
         }
       },
     })
