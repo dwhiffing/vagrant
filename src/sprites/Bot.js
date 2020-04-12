@@ -30,7 +30,7 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
   }
 
   die() {
-    this.emit('destroy')
+    this.emit('kill')
     this.scene.events.emit('loseLife')
     this.setActive(false)
     this.setVisible(false)

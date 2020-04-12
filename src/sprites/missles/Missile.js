@@ -4,8 +4,13 @@ import {
   MOVE_TOWARD_TARGET,
   STALL,
   WOBBLE,
+  BLINK,
 } from '../../behaviors'
 import { TYPES } from './types'
+import sample from 'lodash/sample'
+
+const MIN_EXPLODE_TIME = 500
+const MAX_EXPLODE_TIME = 1200
 
 export class Missile extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -61,26 +66,50 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
       wobbleLimit: this.opts.wobbleLimit,
       wobbleSpeed: this.opts.wobbleSpeed,
     })
+
+    this.behaviors.set('blink', BLINK)
   }
 
-  fire(x, y) {
+  fire(x, y, target = this.scene.bot) {
     this.emit('fire')
+    this.target = target
+    this.clearTint()
     this.body.reset(x, y)
     this.setActive(true)
     this.setVisible(true)
     this.setScale(this.opts.scale)
+    this.explosionDamage = this.opts.explosionDamage
   }
 
   damage(amount) {
     this.health -= amount
+
     if (this.health <= 0) {
+      const target = sample([
+        [0, 0],
+        [this.scene.cameras.main.width, 0],
+        [0, this.scene.cameras.main.height],
+        [this.scene.cameras.main.width, this.scene.cameras.main.height],
+      ])
+      this.target = { x: target[0], y: target[1], active: true }
+
+      this.emit('blink')
+      this.explosionDamage = 0
       this.scene.events.emit('score', { amount: this.score })
-      this.destroy()
+
+      this.scene.time.addEvent({
+        delay: Phaser.Math.RND.between(MIN_EXPLODE_TIME, MAX_EXPLODE_TIME),
+        callback: () => {
+          this.kill()
+        },
+      })
     }
   }
 
-  destroy() {
-    this.emit('destroy')
+  kill({ shouldDamage = false } = {}) {
+    if (this.visible) {
+      this.emit('kill', { shouldDamage })
+    }
     this.setActive(false)
     this.setVisible(false)
   }
