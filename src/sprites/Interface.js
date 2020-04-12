@@ -37,7 +37,7 @@ export class Interface {
       this.bar.scaleX = 2.5 * (opts.health / 100)
     })
 
-    this.scene.events.once('loseLife', () => {
+    this.scene.events.on('loseLife', () => {
       this.lives -= 1
 
       if (this.lives < 3) {
@@ -55,11 +55,6 @@ export class Interface {
         callback: () => {
           if (this.lives === 0) {
             this.scene.scene.start('Menu', { score: this.score })
-          } else {
-            this.scene.scene.restart({
-              lives: this.lives,
-              score: this.score,
-            })
           }
         },
       })

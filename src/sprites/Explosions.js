@@ -1,7 +1,6 @@
 export class Explosions extends Phaser.Physics.Arcade.Group {
   constructor(scene, opts = { key, scale: 1 }) {
     super(scene.physics.world, scene)
-    console.log(opts.key)
     this.createMultiple({
       frameQuantity: 1,
       key: opts.key,
