@@ -23,21 +23,15 @@ export const EXPLODE = {
       key: 'explosion-3',
     })
 
-    entity.explode = () => {
-      entity.setActive(false)
-      entity.scene.time.addEvent({
-        delay: entity.explosionDelay,
-        callback: () => {
-          entity.explosionGroup.makeExplosion(entity.x, entity.y)
-          entity.destroy()
-
-          entity
-            .getTargets()
-            .filter((target) => withinDistance(entity, target, entity.radius))
-            .forEach((target) => target.damage(entity.explosionDamage))
-        },
-      })
-    }
+    entity.on('kill', (opts) => {
+      entity.explosionGroup.makeExplosion(entity.x, entity.y)
+      if (opts.shouldDamage) {
+        entity
+          .getTargets()
+          .filter((target) => withinDistance(entity, target, entity.radius))
+          .forEach((target) => target.damage(entity.explosionDamage))
+      }
+    })
   },
 
   update: function (entity) {
@@ -52,6 +46,9 @@ export const EXPLODE = {
     )
       return
 
-    entity.explode()
+    entity.scene.time.addEvent({
+      delay: entity.explosionDelay,
+      callback: () => entity.kill({ shouldDamage: true }),
+    })
   },
 }

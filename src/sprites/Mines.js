@@ -44,8 +44,10 @@ class Mine extends Phaser.Physics.Arcade.Sprite {
     })
   }
 
-  destroy() {
-    this.emit('destroy')
+  kill() {
+    if (this.visible) {
+      this.emit('kill', { shouldDamage: true })
+    }
     this.setActive(false)
     this.setVisible(false)
   }
