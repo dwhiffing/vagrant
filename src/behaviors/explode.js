@@ -6,8 +6,8 @@ const withinDistance = (entity, other, distance) =>
 export const EXPLODE = {
   options: {
     getTargets: () => ({}),
-    destroyTarget: false,
     explosionDelay: 0,
+    explosionDamage: 20,
     triggerRadius: 50,
     explosionRadius: 50,
   },
@@ -15,16 +15,18 @@ export const EXPLODE = {
   $create: function (entity, opts) {
     entity.radius = opts.explosionRadius
     entity.triggerRadius = opts.triggerRadius
+    entity.explosionDelay = opts.explosionDelay
+    entity.explosionDamage = opts.explosionDamage
     entity.getTargets = opts.getTargets
     entity.explosionGroup = new Explosions(entity.scene, {
       scale: opts.explosionRadius / 20,
       key: 'explosion-3',
     })
 
-    entity.explode = ({ explosionDelay }) => {
+    entity.explode = () => {
       entity.setActive(false)
       entity.scene.time.addEvent({
-        delay: explosionDelay,
+        delay: entity.explosionDelay,
         callback: () => {
           entity.explosionGroup.makeExplosion(entity.x, entity.y)
           entity.destroy()
@@ -32,13 +34,13 @@ export const EXPLODE = {
           entity
             .getTargets()
             .filter((target) => withinDistance(entity, target, entity.radius))
-            .forEach((target) => target.damage())
+            .forEach((target) => target.damage(entity.explosionDamage))
         },
       })
     }
   },
 
-  update: function (entity, opts) {
+  update: function (entity) {
     if (!entity.active) return
 
     if (
@@ -50,6 +52,6 @@ export const EXPLODE = {
     )
       return
 
-    entity.explode(opts)
+    entity.explode()
   },
 }

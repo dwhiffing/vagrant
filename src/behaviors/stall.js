@@ -1,10 +1,14 @@
 export const STALL = {
   options: {
     stallTimeout: 120,
+    stallDuration: 2000,
+    stallRecharge: 3000,
   },
   $create: function (entity, opts) {
     entity.stallSpeed = 1
     entity.stallTimeout = opts.stallTimeout
+    entity.stallDuration = opts.stallDuration
+    entity.stallRecharge = opts.stallRecharge
     entity.stall = () => {
       if (entity.preventStall) {
         return
@@ -22,7 +26,7 @@ export const STALL = {
         onUpdate: (tween) => (entity.stallSpeed = tween.getValue()),
       })
       entity.scene.time.addEvent({
-        delay: 2000,
+        delay: entity.stallDuration,
         callback: () => {
           entity.stalled = false
           entity.emit('unstall')
@@ -35,7 +39,7 @@ export const STALL = {
         },
       })
       entity.scene.time.addEvent({
-        delay: 3000,
+        delay: entity.stallRecharge,
         callback: () => (entity.preventStall = false),
       })
     }
