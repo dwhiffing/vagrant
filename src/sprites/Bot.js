@@ -13,7 +13,7 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
 
     scene.behavior.enable(this)
     this.behaviors.set('moveTowardMouse', MOVE_TOWARD_TARGET, {
-      speed: 1000,
+      speed: 1300,
       target: scene.target,
       turnRate: 1000,
     })

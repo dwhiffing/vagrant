@@ -14,7 +14,7 @@ export class Missiles extends Phaser.Physics.Arcade.Group {
   }
 
   spawn() {
-    if (this.countActive(true) < 20) {
+    if (this.countActive(true) < 5) {
       const containerWidth = this.scene.cameras.main.width
       const containerHeight = this.scene.cameras.main.height
       let x = Phaser.Math.RND.between(50, containerWidth - 50)
