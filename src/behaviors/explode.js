@@ -34,6 +34,9 @@ export const EXPLODE = {
       callback: () => {
         entity.explosionGroup.makeExplosion(entity.x, entity.y)
         entity.destroy()
+        entity.getTargets().forEach((target) => {
+          target.damage && target.damage()
+        })
         if (opts.destroyTargets) {
           entity
             .getTargets()
