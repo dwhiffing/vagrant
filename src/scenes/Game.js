@@ -1,4 +1,4 @@
-import { Missiles } from '../sprites/Missiles'
+import { Missiles } from '../sprites/missles'
 import { Background } from '../sprites/Background'
 import { Mines } from '../sprites/Mines'
 import { Bot } from '../sprites/Bot'
@@ -55,13 +55,6 @@ export default class extends Phaser.Scene {
         const dY = this.last.y + (y - this.touch.y) * 2
         this.target.setPosition(dX, dY)
       }
-    })
-
-    this.time.addEvent({
-      delay: 1000,
-      callback: this.missileGroup.spawn,
-      callbackScope: this.missileGroup,
-      loop: true,
     })
   }
 

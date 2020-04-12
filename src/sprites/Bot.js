@@ -18,7 +18,7 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     })
   }
 
-  damage(damage = 20) {
+  damage(damage) {
     this.health -= damage
     if (this.health < 0) {
       this.health = 0

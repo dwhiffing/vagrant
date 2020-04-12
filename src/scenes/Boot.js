@@ -24,7 +24,6 @@ export default class extends Phaser.Scene {
     this.load.image('bot', '/assets/images/ufoGreen.png')
     this.load.image('mine', '/assets/images/mine.png')
     this.load.image('target', '/assets/images/target.png')
-    this.load.image('missile', '/assets/images/missile.png')
     this.load.image('title', '/assets/images/title.png')
     this.load.image('smoke', '/assets/images/smoke2.png')
     this.load.image('healthBar', '/assets/images/health-bar.png')
@@ -32,6 +31,11 @@ export default class extends Phaser.Scene {
     this.load.spritesheet('life', '/assets/images/life.png', {
       frameWidth: 25,
       frameHeight: 25,
+    })
+
+    this.load.spritesheet('missile', '/assets/images/missile.png', {
+      frameWidth: 100,
+      frameHeight: 100,
     })
 
     this.load.spritesheet('explosion', '/assets/images/explosion.png', {
