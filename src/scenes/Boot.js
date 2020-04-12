@@ -49,6 +49,11 @@ export default class extends Phaser.Scene {
       frameHeight: 48,
     })
 
+    this.load.spritesheet('rock', '/assets/images/rock.png', {
+      frameWidth: 72,
+      frameHeight: 72,
+    })
+
     this.load.on('complete', () => {
       WebFont.load({
         google: {

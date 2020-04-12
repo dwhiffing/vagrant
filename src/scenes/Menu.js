@@ -9,6 +9,7 @@ export default class extends Phaser.Scene {
 
   create() {
     const { height, width } = this.game.config
+
     this.background = this.add.tileSprite(
       width / 2,
       height / 2,
@@ -18,9 +19,11 @@ export default class extends Phaser.Scene {
     )
     this.background.tileScaleX = 3.5
     this.background.tileScaleY = 3.5
+
     this.title = this.add.image(width / 2, 100, 'title')
     this.title.setOrigin(0.5, 0)
     this.title.setScale(0.65)
+
     if (this.score) {
       this.scoreText = this.add
         .text(width / 2, height / 2, `Score: ${this.score}`, {

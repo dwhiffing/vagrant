@@ -1,4 +1,4 @@
-import { Missile } from './Missile'
+import { EXPLODE, SMOKE, MOVE_TOWARD_TARGET, STALL, WOBBLE } from '../behaviors'
 
 export class Missiles extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
@@ -29,5 +29,57 @@ export class Missiles extends Phaser.Physics.Arcade.Group {
         bullet.fire(x, y)
       }
     }
+  }
+}
+
+class Missile extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x, y) {
+    super(scene, x, y, 'missile')
+    this.turnCounter = 0
+    this.score = 10
+    this.health = 10
+
+    scene.behavior.enable(this)
+    this.behaviors.set('explode', EXPLODE, {
+      getTargets: () => [this.scene.bot],
+    })
+    this.behaviors.set('smoke', SMOKE)
+    this.behaviors.set('moveToward', MOVE_TOWARD_TARGET, {
+      speed: 400,
+      target: scene.bot,
+      turnRate: 4,
+      getShouldAvoid: () =>
+        scene.missileGroup
+          .getChildren()
+          .find(
+            (m) =>
+              m !== this &&
+              Phaser.Math.Distance.Between(this.x, this.y, m.x, m.y) < 50,
+          ),
+    })
+    this.behaviors.set('stall', STALL)
+    this.behaviors.set('wobble', WOBBLE)
+  }
+
+  fire(x, y) {
+    this.emit('fire')
+    this.body.reset(x, y)
+    this.setActive(true)
+    this.setVisible(true)
+    this.setScale(2)
+  }
+
+  damage(amount = 10) {
+    this.health -= amount
+    if (this.health <= 0) {
+      this.scene.events.emit('score', { amount: this.score })
+      this.destroy()
+    }
+  }
+
+  destroy() {
+    this.emit('destroy')
+    this.setActive(false)
+    this.setVisible(false)
   }
 }
