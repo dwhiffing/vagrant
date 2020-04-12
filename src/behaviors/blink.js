@@ -4,6 +4,7 @@ export const BLINK = {
   $create: function (entity) {
     entity.on('fire', () => {
       entity.blinkEvent && entity.blinkEvent.destroy()
+      entity.clearTint()
     })
     entity.on('blink', () => {
       entity.blinkEvent = entity.scene.time.addEvent({

@@ -25,9 +25,6 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
       this.opts = TYPES.big
     }
     this.turnCounter = 0
-    this.score = this.opts.score
-    this.health = this.opts.health
-    this.setFrame(this.opts.frame)
 
     scene.behavior.enable(this)
 
@@ -38,6 +35,7 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
       explosionDamage: this.opts.explosionDamage,
       explosionDelay: this.opts.explosionDelay,
       triggerRadius: this.opts.triggerRadius,
+      explosionKey: 'explosion-2',
       explosionRadius: this.opts.explosionRadius,
     })
 
@@ -73,12 +71,14 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
   fire(x, y, target = this.scene.bot) {
     this.emit('fire')
     this.target = target
-    this.clearTint()
     this.body.reset(x, y)
     this.setActive(true)
     this.setVisible(true)
     this.setScale(this.opts.scale)
+    this.health = this.opts.health
+    this.score = this.opts.score
     this.explosionDamage = this.opts.explosionDamage
+    this.setFrame(this.opts.frame)
   }
 
   damage(amount) {

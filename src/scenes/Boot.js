@@ -54,8 +54,8 @@ export default class extends Phaser.Scene {
     })
 
     this.load.spritesheet('rock', '/assets/images/rock.png', {
-      frameWidth: 72,
-      frameHeight: 72,
+      frameWidth: 100,
+      frameHeight: 100,
     })
 
     this.load.on('complete', () => {
