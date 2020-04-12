@@ -15,15 +15,24 @@ export default class extends Phaser.Scene {
         60,
       )
     })
+    this.load.script(
+      'webfont',
+      'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
+    )
 
     this.load.image('background', '/assets/images/background2.gif')
     this.load.image('bot', '/assets/images/ufoGreen.png')
     this.load.image('mine', '/assets/images/mine.png')
     this.load.image('target', '/assets/images/target.png')
     this.load.image('missile', '/assets/images/missile.png')
+    this.load.image('title', '/assets/images/title.png')
     this.load.image('smoke', '/assets/images/smoke2.png')
     this.load.image('healthBar', '/assets/images/health-bar.png')
     this.load.image('healthBarIn', '/assets/images/health-bar-in.png')
+    this.load.spritesheet('life', '/assets/images/life.png', {
+      frameWidth: 25,
+      frameHeight: 25,
+    })
 
     this.load.spritesheet('explosion', '/assets/images/explosion.png', {
       frameWidth: 128,
@@ -41,8 +50,15 @@ export default class extends Phaser.Scene {
     })
 
     this.load.on('complete', () => {
-      progress.destroy()
-      this.scene.start('Game')
+      WebFont.load({
+        google: {
+          families: ['Space Mono'],
+        },
+        active: () => {
+          progress.destroy()
+          this.scene.start('Menu')
+        },
+      })
     })
   }
 }

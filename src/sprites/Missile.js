@@ -29,9 +29,13 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
     this.setScale(2)
   }
 
-  destroy() {
+  destroy({ shouldScore } = {}) {
     this.emit('destroy')
     this.setActive(false)
     this.setVisible(false)
+    if (shouldScore) {
+      this.scene.score += 10
+      this.scene.scoreText.setText(`${this.scene.score}`)
+    }
   }
 }
