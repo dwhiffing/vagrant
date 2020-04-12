@@ -36,8 +36,10 @@ class Mine extends Phaser.Physics.Arcade.Sprite {
     scene.behavior.enable(this)
     this.behaviors.set('explode', EXPLODE, {
       destroyTargets: true,
-      explosionDelay: 100,
-      explosionRadius: 150,
+      explosionDelay: 350,
+      triggerRadius: 120,
+      explosionRadius: 200,
+      explosionDamage: 20,
       getTargets: () => this.scene.missileGroup.getChildren(),
     })
   }
