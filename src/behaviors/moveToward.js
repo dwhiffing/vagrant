@@ -77,7 +77,7 @@ export const MOVE_TOWARD_TARGET = {
   },
 
   update(entity) {
-    if (!entity.active) {
+    if (!entity.active || !entity.target.active) {
       return
     }
 

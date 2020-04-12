@@ -21,6 +21,12 @@ export default class extends Phaser.Scene {
     )
     this.background.tileScaleX = 3.5
     this.background.tileScaleY = 3.5
+    this.healthBar = this.add.image(10, 10, 'healthBar')
+    this.healthBar.setOrigin(0)
+    this.healthBar.setScale(3)
+    this.healthBarIn = this.add.image(34, 30, 'healthBarIn')
+    this.healthBarIn.setOrigin(0)
+    this.healthBarIn.setScale(3)
 
     this.touchX = width / 2
     this.touchY = height / 2

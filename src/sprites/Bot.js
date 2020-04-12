@@ -9,10 +9,7 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     scene.physics.world.enable(this)
     this.setCollideWorldBounds(true)
     this.setScale(1.3)
-
-    // scene.events.on('update', (time, delta) => {
-    //   this.update(time, delta)
-    // })
+    this.health = 100
 
     scene.behavior.enable(this)
     this.behaviors.set('moveTowardMouse', MOVE_TOWARD_TARGET, {
@@ -22,9 +19,26 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     })
   }
 
+  damage() {
+    this.health -= 10
+    if (this.health < 0) {
+      this.health = 0
+    }
+    this.scene.healthBarIn.scaleX = 3 * (this.health / 100)
+    if (this.health <= 0) {
+      this.destroy()
+    }
+  }
+
   destroy() {
     this.emit('destroy')
     this.setActive(false)
     this.setVisible(false)
+    this.scene.time.addEvent({
+      delay: 2000,
+      callback: () => {
+        this.scene.scene.start('Game')
+      },
+    })
   }
 }
