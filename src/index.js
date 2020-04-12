@@ -6,9 +6,9 @@ const game = new Phaser.Game({
   transparent: true,
   type: Phaser.AUTO,
   parent: 'phaser-example',
-  backgroundColor: '#111',
-  width: 900,
-  height: 900,
+  backgroundColor: '#fff',
+  width: window.document.documentElement.clientWidth,
+  height: window.document.documentElement.clientHeight,
   plugins: {
     global: [{ key: 'BehaviorPlugin', plugin: BehaviorPlugin, start: true }],
   },

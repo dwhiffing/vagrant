@@ -1,9 +1,9 @@
 export class Explosion extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
-    super(scene, x, y, 'explosion')
+    super(scene, x, y, 'explosion-3')
     this.anim = this.scene.anims.create({
       key: 'boom',
-      frames: this.scene.anims.generateFrameNumbers('explosion'),
+      frames: this.scene.anims.generateFrameNumbers('explosion-2'),
       frameRate: 20,
     })
   }

@@ -22,6 +22,7 @@ export class Mines extends Phaser.Physics.Arcade.Group {
       if (mine) {
         mine.body.reset(x, y)
         mine.setActive(true)
+        mine.setScale(4)
         mine.setVisible(true)
       }
     }

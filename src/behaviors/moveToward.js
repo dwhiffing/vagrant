@@ -21,12 +21,14 @@ export const MOVE_TOWARD_TARGET = {
     entity.target = opts.target
     entity.getAvoidGroup = opts.getAvoidGroup
 
-    if (entity.wobble > 0) {
+    if (opts.wobbleLimit > 0) {
       entity.scene.tweens.addCounter({
-        from: -opts.wobbleLimit,
-        to: opts.wobbleLimit,
+        from: opts.wobbleLimit,
+        to: -opts.wobbleLimit,
+        ease: 'Sine.easeInOut',
         duration: opts.wobbleSpeed,
         loop: -1,
+        yoyo: true,
         onUpdate: (tween) => {
           entity.wobble = tween.getValue()
         },
@@ -82,7 +84,7 @@ export const MOVE_TOWARD_TARGET = {
     const { x, y } = entity.target
     let targetAngle = Phaser.Math.Angle.Between(entity.x, entity.y, x, y)
 
-    if (entity.wobble > 0) {
+    if (typeof entity.wobble === 'number') {
       targetAngle += Phaser.Math.DegToRad(entity.wobble)
     }
 
@@ -93,7 +95,7 @@ export const MOVE_TOWARD_TARGET = {
         .find(
           (m) =>
             m !== entity &&
-            Phaser.Math.Distance.Between(entity.x, entity.y, m.x, m.y) < 30,
+            Phaser.Math.Distance.Between(entity.x, entity.y, m.x, m.y) < 40,
         )
 
       if (closeMissle) {
