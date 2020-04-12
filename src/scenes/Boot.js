@@ -5,7 +5,7 @@ export default class extends Phaser.Scene {
 
   preload() {
     const progress = this.add.graphics()
-    this.load.on('progress', value => {
+    this.load.on('progress', (value) => {
       progress.clear()
       progress.fillStyle(0xffffff, 1)
       progress.fillRect(
@@ -16,15 +16,26 @@ export default class extends Phaser.Scene {
       )
     })
 
-    this.load.image('bot', '/assets/images/bot.png')
+    this.load.image('background', '/assets/images/background2.gif')
+    this.load.image('bot', '/assets/images/ufoGreen.png')
     this.load.image('mine', '/assets/images/mine.png')
     this.load.image('target', '/assets/images/target.png')
     this.load.image('missile', '/assets/images/missile.png')
-    this.load.image('smoke', '/assets/images/yellow.png')
+    this.load.image('smoke', '/assets/images/smoke2.png')
 
     this.load.spritesheet('explosion', '/assets/images/explosion.png', {
       frameWidth: 128,
       frameHeight: 128,
+    })
+
+    this.load.spritesheet('explosion-2', '/assets/images/explosion-2.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    })
+
+    this.load.spritesheet('explosion-3', '/assets/images/explosion-3.png', {
+      frameWidth: 48,
+      frameHeight: 48,
     })
 
     this.load.on('complete', () => {

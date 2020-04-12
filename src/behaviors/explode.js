@@ -12,18 +12,19 @@ export const EXPLODE = {
     explosionRadius: 50,
   },
 
-  $create: function(entity, opts) {
+  $create: function (entity, opts) {
     entity.explosionGroup = new Explosions(entity.scene, {
-      scale: opts.explosionRadius / 80,
+      scale: opts.explosionRadius / 20,
+      key: 'explosion-3',
     })
     entity.getTargets = opts.getTargets
   },
 
-  update: function(entity, opts, game, dt) {
+  update: function (entity, opts, game, dt) {
     if (!entity.active) return
     const withinTriggerRadius = entity
       .getTargets()
-      .filter(t => withinDistance(entity, t, opts.triggerRadius))
+      .filter((t) => withinDistance(entity, t, opts.triggerRadius))
 
     if (withinTriggerRadius.length === 0) return
 
@@ -36,8 +37,8 @@ export const EXPLODE = {
         if (opts.destroyTargets) {
           entity
             .getTargets()
-            .filter(t => withinDistance(entity, t, opts.explosionRadius))
-            .forEach(t => t.destroy())
+            .filter((t) => withinDistance(entity, t, opts.explosionRadius))
+            .forEach((t) => t.destroy())
         }
       },
     })
@@ -45,11 +46,11 @@ export const EXPLODE = {
 }
 
 class Explosions extends Phaser.Physics.Arcade.Group {
-  constructor(scene, opts = { scale: 1 }) {
+  constructor(scene, opts = { key: 'explosion-3', scale: 1 }) {
     super(scene.physics.world, scene)
     this.createMultiple({
       frameQuantity: 5,
-      key: 'explosion',
+      key: opts.key,
       active: false,
       visible: false,
       classType: Explosion,
