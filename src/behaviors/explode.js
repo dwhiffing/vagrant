@@ -10,6 +10,7 @@ export const EXPLODE = {
     explosionDamage: 20,
     triggerRadius: 50,
     explosionRadius: 50,
+    explosionKey: 'explosion-2',
   },
 
   $create: function (entity, opts) {
@@ -19,8 +20,14 @@ export const EXPLODE = {
     entity.explosionDamage = opts.explosionDamage
     entity.getTargets = opts.getTargets
     entity.explosionGroup = new Explosions(entity.scene, {
-      scale: opts.explosionRadius / 20,
-      key: 'explosion-3',
+      scale:
+        opts.explosionRadius /
+        (opts.explosionKey === 'explosion'
+          ? 80
+          : opts.explosionKey === 'explosion-2'
+          ? 20
+          : 30),
+      key: opts.explosionKey,
     })
 
     entity.on('kill', (opts) => {
@@ -36,19 +43,17 @@ export const EXPLODE = {
 
   update: function (entity) {
     if (!entity.active) return
+    const targets = entity
+      .getTargets()
+      .filter((target) => withinDistance(entity, target, entity.triggerRadius))
 
-    if (
-      entity
-        .getTargets()
-        .filter((target) =>
-          withinDistance(entity, target, entity.triggerRadius),
-        ).length === 0
-    )
-      return
+    if (targets.length === 0) return
 
     entity.scene.time.addEvent({
       delay: entity.explosionDelay,
-      callback: () => entity.kill({ shouldDamage: true }),
+      callback: () => {
+        entity.kill({ shouldDamage: true })
+      },
     })
   },
 }

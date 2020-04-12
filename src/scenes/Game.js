@@ -4,6 +4,7 @@ import { Mines } from '../sprites/Mines'
 import { Bot } from '../sprites/Bot'
 import { Interface } from '../sprites/Interface'
 import { Target } from '../sprites/Target'
+import { Rocks } from '../sprites/rocks'
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -25,6 +26,7 @@ export default class extends Phaser.Scene {
     this.mines = new Mines(this)
     this.bot = this.add.existing(new Bot(this, width / 2, height / 2))
     this.missileGroup = new Missiles(this)
+    this.rockGroup = new Rocks(this)
     this.interface = new Interface(this, this.lives, this.score)
 
     this.touch = { x: width / 2, y: height / 2 }
