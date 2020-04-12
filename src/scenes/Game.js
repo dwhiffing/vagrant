@@ -1,8 +1,9 @@
 import { Missiles } from '../sprites/Missiles'
+import { Background } from '../sprites/Background'
 import { Mines } from '../sprites/Mines'
 import { Bot } from '../sprites/Bot'
-
-let iter = 0
+import { Interface } from '../sprites/Interface'
+import { Target } from '../sprites/Target'
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -12,95 +13,47 @@ export default class extends Phaser.Scene {
   init(opts) {
     this.lives = opts.lives || 3
     this.score = opts.score || 0
+    this.iter = 0
   }
 
   create() {
     const { width, height } = this.game.canvas
     this.behavior = this.plugins.get('BehaviorPlugin')
-    this.background = this.add.tileSprite(
-      width / 2,
-      height / 2,
-      width,
-      height,
-      'background',
-    )
-    this.background.tileScaleX = 3.5
-    this.background.tileScaleY = 3.5
 
-    this.touchX = width / 2
-    this.touchY = height / 2
-    this.lastX = this.touchX
-    this.lastY = this.touchY
-    this.target = this.add.sprite(width / 2, height / 2, 'target')
-    this.physics.world.enable(this.target)
-    this.target.body.setCollideWorldBounds(true)
-    this.input.addPointer(2)
-    this.input.pointer1.id
-
+    this.background = this.add.existing(new Background(this, width, height))
+    this.target = this.add.existing(new Target(this, width / 2, height / 2))
     this.mines = new Mines(this)
-
     this.bot = this.add.existing(new Bot(this, width / 2, height / 2))
-
     this.missileGroup = new Missiles(this)
+    this.interface = new Interface(this, this.lives, this.score)
 
-    this.healthBar = this.add.image(20, 20, 'healthBar')
-    this.healthBar.setOrigin(0)
-    this.healthBar.setScale(2.5)
-    this.healthBarIn = this.add.image(43, 39, 'healthBarIn')
-    this.healthBarIn.setOrigin(0)
-    this.healthBarIn.setScale(2.5)
+    this.touch = { x: width / 2, y: height / 2 }
+    this.last = { x: this.touch.x, y: this.touch.y }
+    this.input.addPointer(2)
 
-    this.life1 = this.add.image(width - 1 * 85 - 10, 20, 'life')
-    this.life1.setScale(3).setOrigin(0)
-    this.life2 = this.add.image(width - 2 * 85 - 10, 20, 'life')
-    this.life2.setScale(3).setOrigin(0)
-    this.life3 = this.add.image(width - 3 * 85 - 10, 20, 'life')
-    this.life3.setScale(3).setOrigin(0)
-    if (this.lives < 3) {
-      this.life3.setFrame(1)
-    }
-    if (this.lives < 2) {
-      this.life2.setFrame(1)
-    }
-
-    this.scoreText = this.add
-      .text(width / 2, 18, this.score, {
-        fontFamily: 'Space Mono',
-        fontSize: 60,
-        color: '#ffffff',
-      })
-      .setShadow(2, 2, '#333333', 2, false, true)
-    this.scoreText.setOrigin(0.5, 0)
-
-    this.input.keyboard.on('keydown-SPACE', (event) => {
+    this.input.keyboard.on('keydown-SPACE', () => {
       this.mines.spawn(this.bot.x, this.bot.y)
     })
 
-    this.input.on('pointerdown', ({ x, y, id }) => {
+    this.input.on('pointerdown', ({ x, y, id, wasTouch }) => {
       if (id === 1) {
-        this.lastX = this.target.x
-        this.lastY = this.target.y
-        this.touchX = x
-        this.touchY = y
+        this.last = { x: this.target.x, y: this.target.y }
+        this.touch = { x, y }
       }
-      if (
-        !this.input.pointer1.wasTouch ||
-        (id === 2 && this.input.pointer1.isDown)
-      ) {
+      if (!wasTouch || (id === 2 && this.input.pointer1.isDown)) {
         this.mines.spawn(this.bot.x, this.bot.y)
       }
     })
 
     this.input.on('pointermove', ({ x, y, id }) => {
-      if (this.input.activePointer.wasTouch) {
-        if (id === 1) {
-          const diff = { x: x - this.touchX, y: y - this.touchY }
-          this.target.x = this.lastX + diff.x * 2
-          this.target.y = this.lastY + diff.y * 2
-        }
-      } else {
-        this.target.x = x
-        this.target.y = y
+      if (!this.input.activePointer.wasTouch) {
+        return this.target.setPosition(x, y)
+      }
+
+      if (id === 1) {
+        const dX = this.last.x + (x - this.touch.x) * 2
+        const dY = this.last.y + (y - this.touch.y) * 2
+        this.target.setPosition(dX, dY)
       }
     })
 
@@ -115,8 +68,6 @@ export default class extends Phaser.Scene {
   update() {
     this.behavior.preUpdate()
     this.behavior.update()
-    this.background.tilePositionX = Math.cos(iter) * 100
-    this.background.tilePositionY -= 0.8
-    iter += 0.001
+    this.background.update()
   }
 }
