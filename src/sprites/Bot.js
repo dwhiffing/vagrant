@@ -1,4 +1,4 @@
-import { MOVE_TOWARD_TARGET } from '../behaviors/moveToward'
+import { MOVE_TOWARD_TARGET, BLINK } from '../behaviors'
 
 export class Bot extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -16,17 +16,23 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
       target: scene.target,
       turnRate: 1000,
     })
+    this.behaviors.set('blink', BLINK, {
+      blinkRate: 200,
+      blinkRepeat: 21,
+      useAlpha: true,
+      onBlinkComplete: () => (this.invulnerable = false),
+    })
   }
 
   damage(damage) {
-    this.health -= damage
-    if (this.health < 0) {
-      this.health = 0
+    if (!this.invulnerable && this.active) {
+      this.health -= damage
+      if (this.health <= 0) {
+        this.health = 0
+        this.die()
+      }
+      this.scene.events.emit('health', { health: this.health })
     }
-    if (this.health <= 0 && this.active) {
-      this.die()
-    }
-    this.scene.events.emit('health', { health: this.health })
   }
 
   die() {
@@ -34,5 +40,23 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     this.scene.events.emit('loseLife')
     this.setActive(false)
     this.setVisible(false)
+    if (this.scene.interface.lives > 0) {
+      this.scene.time.addEvent({
+        delay: 1000,
+        callback: () => {
+          this.restore()
+        },
+      })
+    }
+  }
+
+  restore() {
+    this.invulnerable = true
+    this.emit('blink')
+    this.health = 100
+    this.setActive(true)
+    this.setVisible(true)
+    this.scene.events.emit('health', { health: 100 })
+    this.setPosition(this.scene.target.x, this.scene.target.y)
   }
 }
