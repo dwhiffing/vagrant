@@ -5,14 +5,9 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     super(scene, x, y, 'rock')
 
-    const rand = Math.random()
-    this.opts = TYPES.normal
-    if (rand > 0.6) {
-      this.opts = TYPES.fast
-    }
-    if (rand > 0.8) {
-      this.opts = TYPES.big
-    }
+    this.opts = Phaser.Math.RND.pick([TYPES.normal, TYPES.fast, TYPES.big])
+    this.setActive(false)
+    this.setVisible(false)
     this.score = this.opts.score
     this.health = this.opts.health
     this.setFrame(this.opts.frame)
@@ -20,11 +15,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
     scene.behavior.enable(this)
 
     this.behaviors.set('explode', EXPLODE, {
-      getTargets: () => [
-        this.scene.bot,
-        //TODO: rocks/missiles should collide instead and explode when out of health
-        ...this.scene.missileGroup.getChildren(),
-      ],
+      getTargets: () => [this.scene.bot],
       explosionKey: 'explosion',
       explosionDamage: this.opts.explosionDamage,
       explosionDelay: this.opts.explosionDelay,
@@ -43,12 +34,9 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
     this.setActive(true)
     this.setVisible(true)
     this.setScale(this.opts.scale)
+    this.enableBody()
     const speed = this.opts.speed
-    this.body.setVelocity(x < 0 ? speed : -speed, y < 0 ? speed : -speed)
-    // this.body.setVelocity(
-    //   Phaser.Math.RND.between(-speed, speed),
-    //   Phaser.Math.RND.between(-speed, speed),
-    // )
+    this.body.setVelocity(x < 0 ? speed : -speed, 0)
     this.body.angularVelocity = Phaser.Math.RND.pick([
       100,
       -100,
@@ -58,13 +46,15 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
       -25,
     ])
     this.explosionDamage = this.opts.explosionDamage
+    this.body.setSize(this.opts.size, this.opts.size, false)
+    this.body.setOffset(25, 25)
   }
 
   damage(amount) {
     this.health -= amount
+    this.emit('blink', { blinkRepeat: 1, blinkRate: 50 })
 
     if (this.health <= 0) {
-      this.emit('blink')
       this.scene.events.emit('score', { amount: this.score })
       this.kill()
     }
@@ -74,6 +64,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
     if (this.visible) {
       this.emit('kill', { shouldDamage })
     }
+    this.disableBody()
     this.setActive(false)
     this.setVisible(false)
   }

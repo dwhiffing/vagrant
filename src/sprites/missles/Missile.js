@@ -15,15 +15,9 @@ const MAX_EXPLODE_TIME = 1200
 export class Missile extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     super(scene, x, y, 'missile')
-
-    const rand = Math.random()
-    this.opts = TYPES.normal
-    if (rand > 0.6) {
-      this.opts = TYPES.fast
-    }
-    if (rand > 0.8) {
-      this.opts = TYPES.big
-    }
+    this.setActive(false)
+    this.setVisible(false)
+    this.opts = Phaser.Math.RND.pick([TYPES.normal, TYPES.fast, TYPES.big])
     this.turnCounter = 0
 
     scene.behavior.enable(this)
@@ -78,12 +72,17 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
     this.health = this.opts.health
     this.score = this.opts.score
     this.explosionDamage = this.opts.explosionDamage
+    this.enableBody()
+    this.clearTint()
     this.setFrame(this.opts.frame)
+    this.body.setSize(this.opts.size, this.opts.size, false)
+    this.body.setOffset(35, 35)
   }
 
-  damage(amount) {
+  damage(amount, instakill = false) {
     this.health -= amount
 
+    this.emit('blink', { blinkRepeat: 1, blinkRate: 50 })
     if (this.health <= 0) {
       const target = sample([
         [0, 0],
@@ -93,12 +92,17 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
       ])
       this.target = { x: target[0], y: target[1], active: true }
 
-      this.emit('blink')
+      this.emit('blink', {
+        blinkRate: 150,
+        blinkRepeat: 13,
+      })
       this.explosionDamage = 0
       this.scene.events.emit('score', { amount: this.score })
 
       this.scene.time.addEvent({
-        delay: Phaser.Math.RND.between(MIN_EXPLODE_TIME, MAX_EXPLODE_TIME),
+        delay: instakill
+          ? 0
+          : Phaser.Math.RND.between(MIN_EXPLODE_TIME, MAX_EXPLODE_TIME),
         callback: () => {
           this.kill()
         },
@@ -110,6 +114,7 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
     if (this.visible) {
       this.emit('kill', { shouldDamage })
     }
+    this.disableBody()
     this.setActive(false)
     this.setVisible(false)
   }

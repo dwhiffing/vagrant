@@ -42,8 +42,8 @@ class Mine extends Phaser.Physics.Arcade.Sprite {
       explosionDamage: 20,
       explosionKey: 'explosion-3',
       getTargets: () => [
-        ...this.scene.missileGroup.getChildren(),
-        ...this.scene.rockGroup.getChildren(),
+        ...this.scene.missileGroup.getChildren().filter((c) => c.active),
+        ...this.scene.rockGroup.getChildren().filter((c) => c.active),
       ],
     })
   }

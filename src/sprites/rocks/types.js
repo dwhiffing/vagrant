@@ -4,10 +4,11 @@ export const BASE = {
   frame: 1,
   scale: 1.5,
   speed: 100,
+  size: 50,
   explosionDelay: 0,
   triggerRadius: 100,
   explosionRadius: 100,
-  explosionDamage: 10,
+  explosionDamage: 20,
 }
 
 export const TYPES = {
@@ -17,6 +18,8 @@ export const TYPES = {
   fast: {
     ...BASE,
     speed: 300,
+    health: 10,
+    score: 5,
     triggerRadius: 50,
     explosionRadius: 50,
     explosionDamage: 5,
@@ -27,6 +30,7 @@ export const TYPES = {
     ...BASE,
     health: 40,
     speed: 50,
+    score: 50,
     triggerRadius: 120,
     explosionRadius: 120,
     explosionDamage: 30,

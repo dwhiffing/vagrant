@@ -1,27 +1,19 @@
 export const BLINK = {
-  options: {
-    blinkRate: 150,
-    blinkRepeat: 13,
-    useAlpha: false,
-    onBlinkComplete: () => {},
-  },
-
   $create: function (entity, options) {
-    entity.onBlinkComplete = options.onBlinkComplete
     entity.on('fire', () => {
       entity.blinkEvent && entity.blinkEvent.destroy()
       entity.clearTint()
     })
-    entity.on('blink', () => {
+    entity.on('blink', (opts = {}) => {
       let i = 0
       entity.blinkEvent = entity.scene.time.addEvent({
-        delay: options.blinkRate,
-        repeat: options.blinkRepeat,
+        delay: opts.blinkRate,
+        repeat: opts.blinkRepeat,
         callback: () => {
-          if (i++ === options.blinkRepeat) {
-            entity.onBlinkComplete()
+          if (i++ === opts.blinkRepeat) {
+            opts.onBlinkComplete && opts.onBlinkComplete()
           }
-          if (options.useAlpha) {
+          if (opts.useAlpha) {
             entity.alpha = entity.alpha === 1 ? 0.2 : 1
           } else {
             if (entity.isTinted) {
