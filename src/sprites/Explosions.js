@@ -35,12 +35,14 @@ export class Explosion extends Phaser.Physics.Arcade.Sprite {
   }
   fire(x, y) {
     this.body.reset(x, y)
+    this.enableBody()
     this.setActive(true)
     this.setVisible(true)
     this.anims.load(this.thingKey)
     this.angle = Phaser.Math.RND.between(0, 360)
     this.anims.play(this.thingKey)
     this.once('animationcomplete', () => {
+      this.disableBody()
       this.setVisible(false)
       this.setActive(false)
     })

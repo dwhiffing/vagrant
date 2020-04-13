@@ -23,13 +23,8 @@ export class Rocks extends Phaser.Physics.Arcade.Group {
   spawn() {
     const containerWidth = this.scene.cameras.main.width
     const containerHeight = this.scene.cameras.main.height
-    let x = Phaser.Math.RND.between(200, containerWidth - 200)
-    let y = Math.random() < 0.5 ? containerHeight + 200 : -200
-
-    if (Math.random() < 0.5) {
-      x = Math.random() < 0.5 ? containerWidth + 200 : -200
-      y = Phaser.Math.RND.between(200, containerHeight - 200)
-    }
+    const x = Math.random() < 0.5 ? containerWidth + 80 : -80
+    const y = Phaser.Math.RND.between(80, containerHeight - 80)
     let bullet = this.getFirstDead(false)
     if (bullet) {
       bullet.fire(x, y)

@@ -28,6 +28,16 @@ export default class extends Phaser.Scene {
     this.missileGroup = new Missiles(this)
     this.rockGroup = new Rocks(this)
     this.interface = new Interface(this, this.lives, this.score)
+    this.physics.add.overlap(
+      this.missileGroup,
+      this.rockGroup,
+      (obj1, obj2) => {
+        if (obj1.active && obj2.active) {
+          obj1.damage(obj2.explosionDamage, true)
+          obj2.damage(obj1.explosionDamage, true)
+        }
+      },
+    )
 
     this.touch = { x: width / 2, y: height / 2 }
     this.last = { x: this.touch.x, y: this.touch.y }

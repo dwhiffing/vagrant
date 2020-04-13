@@ -16,12 +16,7 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
       target: scene.target,
       turnRate: 1000,
     })
-    this.behaviors.set('blink', BLINK, {
-      blinkRate: 200,
-      blinkRepeat: 21,
-      useAlpha: true,
-      onBlinkComplete: () => (this.invulnerable = false),
-    })
+    this.behaviors.set('blink', BLINK)
   }
 
   damage(damage) {
@@ -52,7 +47,12 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
 
   restore() {
     this.invulnerable = true
-    this.emit('blink')
+    this.emit('blink', {
+      blinkRate: 200,
+      blinkRepeat: 21,
+      useAlpha: true,
+      onBlinkComplete: () => (this.invulnerable = false),
+    })
     this.health = 100
     this.setActive(true)
     this.setVisible(true)
