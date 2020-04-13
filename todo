@@ -1,1 +1,24 @@
-mom should say thanks after saving turt
+Add score numbers and multipliers
+Add wave spawning with specific layouts
+make enemy pools with specific amounts of each variant
+increase difficulty as score increases
+limit number of mines that can be placed:
+  at a time
+  in one second
+
+extra life at 10k points
+add powerups
+  extra health
+  shield
+  extra weapon
+  multiplier?
+  point bonus?
+
+big rocks should split into smaller rocks on destroy?
+big rocks have powerups
+
+add sound effects
+add more visual affects
+add screenshake and haptics
+
+Add shooting enemy type?
