@@ -9,6 +9,8 @@ export default class extends Phaser.Scene {
 
   create() {
     const { height, width } = this.game.config
+    this.music = this.sound.add('title', { loop: true })
+    this.music.play()
 
     this.background = this.add.tileSprite(
       width / 2,
@@ -41,7 +43,20 @@ export default class extends Phaser.Scene {
       .setScale(1.5)
       .setInteractive()
       .on('pointerdown', () => {
+        this.music.stop()
         this.scene.start('Game', { lives: 3 })
       })
+
+    this.mute = this.add.image(
+      this.cameras.main.width - 150,
+      this.cameras.main.height - 150,
+      'icon',
+    )
+    this.mute.setOrigin(0)
+    this.mute.setFrame(1)
+    this.mute.setInteractive().on('pointerdown', () => {
+      this.sound.mute = !this.sound.mute
+      this.mute.setFrame(this.sound.mute ? 1 : 2)
+    })
   }
 }

@@ -30,6 +30,8 @@ export default class extends Phaser.Scene {
     this.missileGroup = new Missiles(this)
     this.rockGroup = new Rocks(this)
     this.interface = new Interface(this, this.lives, this.score)
+    this.music = this.sound.add('game', { loop: true })
+    this.music.play()
 
     this.physics.add.overlap(
       this.missileGroup,
@@ -47,6 +49,11 @@ export default class extends Phaser.Scene {
         item.kill()
         bot.heal(20)
       }
+    })
+
+    this.events.on('gameOver', () => {
+      this.music.stop()
+      this.scene.scene.start('Menu', { score: this.score })
     })
 
     this.touch = { x: width / 2, y: height / 2 }

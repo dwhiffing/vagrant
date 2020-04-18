@@ -20,6 +20,8 @@ export default class extends Phaser.Scene {
       'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js',
     )
 
+    this.load.audio('game', 'assets/audio/game.mp3')
+    this.load.audio('title', 'assets/audio/title.mp3')
     this.load.image('background', 'assets/images/background2.gif')
     this.load.image('bot', 'assets/images/ufoGreen.png')
     this.load.image('mine', 'assets/images/mine.png')
@@ -31,6 +33,10 @@ export default class extends Phaser.Scene {
     this.load.spritesheet('life', 'assets/images/life.png', {
       frameWidth: 25,
       frameHeight: 25,
+    })
+    this.load.spritesheet('icon', 'assets/images/icons.png', {
+      frameWidth: 100,
+      frameHeight: 100,
     })
 
     this.load.spritesheet('item', 'assets/images/items.png', {

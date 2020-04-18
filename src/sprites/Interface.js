@@ -13,6 +13,18 @@ export class Interface {
     this.bar.setOrigin(0)
     this.bar.setScale(2.5)
 
+    this.mute = scene.add.image(
+      this.scene.cameras.main.width - 150,
+      this.scene.cameras.main.height - 150,
+      'icon',
+    )
+    this.mute.setOrigin(0)
+    this.mute.setFrame(this.scene.sound.mute ? 2 : 1)
+    this.mute.setInteractive().on('pointerdown', () => {
+      this.scene.sound.mute = !this.scene.sound.mute
+      this.mute.setFrame(this.scene.sound.mute ? 1 : 2)
+    })
+
     this.life1 = scene.add.image(width - 1 * 85 - 10, 20, 'life')
     this.life1.setScale(3).setOrigin(0)
     this.life2 = scene.add.image(width - 2 * 85 - 10, 20, 'life')
@@ -54,7 +66,7 @@ export class Interface {
         delay: 2000,
         callback: () => {
           if (this.lives === 0) {
-            this.scene.scene.start('Menu', { score: this.score })
+            this.scene.events.emit('gameOver')
           }
         },
       })
