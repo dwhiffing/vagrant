@@ -6,6 +6,7 @@ import {
   WOBBLE,
   BLINK,
   DROP_ITEM,
+  SCORE_TEXT,
 } from '../../behaviors'
 import { TYPES } from './types'
 import sample from 'lodash/sample'
@@ -63,6 +64,7 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
 
     this.behaviors.set('blink', BLINK)
     this.behaviors.set('dropItem', DROP_ITEM)
+    this.behaviors.set('scoreText', SCORE_TEXT)
   }
 
   fire(x, y, target = this.scene.bot) {
@@ -100,6 +102,7 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
         blinkRepeat: 13,
       })
       this.explosionDamage = 0
+      this.emit('score')
       this.scene.events.emit('score', { amount: this.score })
 
       this.scene.time.addEvent({

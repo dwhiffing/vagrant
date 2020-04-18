@@ -3,6 +3,7 @@ import {
   EXPLODE,
   BLINK,
   DESTROY_OUT_OF_BOUNDS,
+  SCORE_TEXT,
 } from '../../behaviors'
 import { TYPES } from './types'
 
@@ -32,6 +33,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
     this.behaviors.set('blink', BLINK)
     this.behaviors.set('destroyOutOfBounds', DESTROY_OUT_OF_BOUNDS)
     this.behaviors.set('dropItem', DROP_ITEM)
+    this.behaviors.set('scoreText', SCORE_TEXT)
   }
 
   fire(x, y, target = this.scene.bot) {
@@ -63,6 +65,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
 
     if (this.health <= 0) {
       this.scene.events.emit('score', { amount: this.score })
+      this.emit('score')
       this.kill()
     }
   }
