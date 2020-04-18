@@ -30,6 +30,7 @@ export default class extends Phaser.Scene {
     this.missileGroup = new Missiles(this)
     this.rockGroup = new Rocks(this)
     this.interface = new Interface(this, this.lives, this.score)
+
     this.physics.add.overlap(
       this.missileGroup,
       this.rockGroup,

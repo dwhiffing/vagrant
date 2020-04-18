@@ -1,10 +1,12 @@
 import { EXPLODE } from '../behaviors'
 
+const MAX_MINES = 5
 export class Mines extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
     super(scene.physics.world, scene)
+    this.canLay = true
     this.createMultiple({
-      frameQuantity: 20,
+      frameQuantity: MAX_MINES,
       key: 'mine',
       active: false,
       visible: false,
@@ -17,13 +19,18 @@ export class Mines extends Phaser.Physics.Arcade.Group {
   }
 
   spawn(x, y) {
-    if (this.countActive(true) < 10) {
+    if (this.countActive(true) < MAX_MINES) {
       let mine = this.getFirstDead(false)
-      if (mine) {
+      if (mine && this.canLay) {
+        this.canLay = false
         mine.body.reset(x, y)
         mine.setActive(true)
         mine.setScale(4)
         mine.setVisible(true)
+        this.scene.time.addEvent({
+          delay: 500,
+          callback: () => (this.canLay = true),
+        })
       }
     }
   }
@@ -41,6 +48,13 @@ class Mine extends Phaser.Physics.Arcade.Sprite {
       explosionRadius: 200,
       explosionDamage: 20,
       explosionKey: 'explosion-3',
+      getShouldExplode: () =>
+        Phaser.Math.Distance.Between(
+          this.x,
+          this.y,
+          this.scene.bot.x,
+          this.scene.bot.y,
+        ) > 150,
       getTargets: () => [
         ...this.scene.missileGroup.getChildren().filter((c) => c.active),
         ...this.scene.rockGroup.getChildren().filter((c) => c.active),

@@ -11,6 +11,7 @@ export const EXPLODE = {
     triggerRadius: 50,
     explosionRadius: 50,
     explosionKey: 'explosion-2',
+    getShouldExplode: () => true,
   },
 
   $create: function (entity, opts) {
@@ -18,6 +19,7 @@ export const EXPLODE = {
     entity.triggerRadius = opts.triggerRadius
     entity.explosionDelay = opts.explosionDelay
     entity.explosionDamage = opts.explosionDamage
+    entity.getShouldExplode = opts.getShouldExplode
     entity.getTargets = opts.getTargets
     entity.explosionGroup = new Explosions(entity.scene, {
       scale:
@@ -48,6 +50,7 @@ export const EXPLODE = {
       .filter((target) => withinDistance(entity, target, entity.triggerRadius))
 
     if (targets.length === 0) return
+    if (!entity.getShouldExplode()) return
 
     entity.scene.time.addEvent({
       delay: entity.explosionDelay,
