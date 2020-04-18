@@ -9,6 +9,10 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true)
     this.setScale(1.5)
     this.health = 100
+    this.hitSound = scene.sound.add('botHit1', { volume: 2 })
+    this.hitSound2 = scene.sound.add('botHit2', { volume: 2 })
+    this.hitSound3 = scene.sound.add('botHit3', { volume: 2 })
+    this.deathSound = scene.sound.add('death', { volume: 3 })
 
     scene.behavior.enable(this)
     this.behaviors.set('moveTowardMouse', MOVE_TOWARD_TARGET, {
@@ -30,6 +34,7 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
   damage(damage) {
     if (!this.invulnerable && this.active) {
       this.health -= damage
+      this.hitSound.play()
       if (this.health <= 0) {
         this.health = 0
         this.die()
@@ -41,11 +46,12 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
   die() {
     this.emit('kill')
     this.scene.events.emit('loseLife')
+    this.deathSound.play()
     this.setActive(false)
     this.setVisible(false)
     if (this.scene.interface.lives > 0) {
       this.scene.time.addEvent({
-        delay: 1000,
+        delay: 3000,
         callback: () => {
           this.restore()
         },

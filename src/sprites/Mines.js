@@ -5,6 +5,8 @@ export class Mines extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
     super(scene.physics.world, scene)
     this.canLay = true
+    this.placeSound = this.scene.sound.add('placeMine')
+    this.noMinesSound = this.scene.sound.add('noMines')
     this.createMultiple({
       frameQuantity: MAX_MINES,
       key: 'mine',
@@ -19,20 +21,22 @@ export class Mines extends Phaser.Physics.Arcade.Group {
   }
 
   spawn(x, y) {
-    if (this.countActive(true) < MAX_MINES) {
-      let mine = this.getFirstDead(false)
-      if (mine && this.canLay) {
-        this.canLay = false
-        mine.body.reset(x, y)
-        mine.setActive(true)
-        mine.setScale(4)
-        mine.setVisible(true)
-        this.scene.time.addEvent({
-          delay: 500,
-          callback: () => (this.canLay = true),
-        })
-      }
+    let mine = this.getFirstDead(false)
+    if (this.countActive(true) >= MAX_MINES || !mine || !this.canLay) {
+      this.noMinesSound.play()
+      return
     }
+
+    this.placeSound.play()
+    this.canLay = false
+    mine.body.reset(x, y)
+    mine.setActive(true)
+    mine.setScale(4)
+    mine.setVisible(true)
+    this.scene.time.addEvent({
+      delay: 500,
+      callback: () => (this.canLay = true),
+    })
   }
 }
 
@@ -47,6 +51,7 @@ class Mine extends Phaser.Physics.Arcade.Sprite {
       triggerRadius: 180,
       explosionRadius: 200,
       explosionDamage: 20,
+      explosionSound: 'explosion3',
       explosionKey: 'explosion-3',
       getShouldExplode: () =>
         Phaser.Math.Distance.Between(

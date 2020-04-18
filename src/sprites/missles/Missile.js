@@ -31,6 +31,7 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
       explosionDelay: this.opts.explosionDelay,
       triggerRadius: this.opts.triggerRadius,
       explosionKey: 'explosion-2',
+      explosionSound: 'explosion1',
       explosionRadius: this.opts.explosionRadius,
     })
 

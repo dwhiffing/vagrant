@@ -22,6 +22,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
     this.behaviors.set('explode', EXPLODE, {
       getTargets: () => [this.scene.bot],
       explosionKey: 'explosion',
+      explosionSound: 'explosion2',
       explosionDamage: this.opts.explosionDamage,
       explosionDelay: this.opts.explosionDelay,
       triggerRadius: this.opts.triggerRadius,
