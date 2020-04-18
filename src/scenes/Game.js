@@ -5,6 +5,7 @@ import { Bot } from '../sprites/Bot'
 import { Interface } from '../sprites/Interface'
 import { Target } from '../sprites/Target'
 import { Rocks } from '../sprites/rocks'
+import { Items } from '../sprites/items'
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -24,6 +25,7 @@ export default class extends Phaser.Scene {
     this.background = this.add.existing(new Background(this, width, height))
     this.target = this.add.existing(new Target(this, width / 2, height / 2))
     this.mines = new Mines(this)
+    this.items = new Items(this)
     this.bot = this.add.existing(new Bot(this, width / 2, height / 2))
     this.missileGroup = new Missiles(this)
     this.rockGroup = new Rocks(this)
@@ -38,6 +40,13 @@ export default class extends Phaser.Scene {
         }
       },
     )
+
+    this.physics.add.overlap(this.items, this.bot, (bot, item) => {
+      if (bot.active && item.active) {
+        item.kill()
+        bot.heal(20)
+      }
+    })
 
     this.touch = { x: width / 2, y: height / 2 }
     this.last = { x: this.touch.x, y: this.touch.y }

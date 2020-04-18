@@ -33,6 +33,11 @@ export default class extends Phaser.Scene {
       frameHeight: 25,
     })
 
+    this.load.spritesheet('item', 'assets/images/items.png', {
+      frameWidth: 50,
+      frameHeight: 50,
+    })
+
     this.load.spritesheet('missile', 'assets/images/missile.png', {
       frameWidth: 100,
       frameHeight: 100,

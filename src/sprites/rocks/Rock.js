@@ -1,4 +1,9 @@
-import { EXPLODE, BLINK, DESTROY_OUT_OF_BOUNDS } from '../../behaviors'
+import {
+  DROP_ITEM,
+  EXPLODE,
+  BLINK,
+  DESTROY_OUT_OF_BOUNDS,
+} from '../../behaviors'
 import { TYPES } from './types'
 
 export class Rock extends Phaser.Physics.Arcade.Sprite {
@@ -25,6 +30,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
 
     this.behaviors.set('blink', BLINK)
     this.behaviors.set('destroyOutOfBounds', DESTROY_OUT_OF_BOUNDS)
+    this.behaviors.set('dropItem', DROP_ITEM)
   }
 
   fire(x, y, target = this.scene.bot) {

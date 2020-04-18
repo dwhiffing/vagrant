@@ -5,6 +5,7 @@ import {
   STALL,
   WOBBLE,
   BLINK,
+  DROP_ITEM,
 } from '../../behaviors'
 import { TYPES } from './types'
 import sample from 'lodash/sample'
@@ -60,6 +61,7 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
     })
 
     this.behaviors.set('blink', BLINK)
+    this.behaviors.set('dropItem', DROP_ITEM)
   }
 
   fire(x, y, target = this.scene.bot) {

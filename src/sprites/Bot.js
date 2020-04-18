@@ -19,6 +19,14 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     this.behaviors.set('blink', BLINK)
   }
 
+  heal(amount) {
+    this.health += amount
+    if (this.health > 100) {
+      this.health = 100
+    }
+    this.scene.events.emit('health', { health: this.health })
+  }
+
   damage(damage) {
     if (!this.invulnerable && this.active) {
       this.health -= damage
