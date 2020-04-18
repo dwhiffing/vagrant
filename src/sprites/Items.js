@@ -19,25 +19,10 @@ export class Items extends Phaser.Physics.Arcade.Group {
 
   spawn(x, y, key) {
     if (this.countActive(true) < 10) {
-      let item = this.getFirstDead(false)
+      let item = this.getFirstDead()
       if (item) {
         this.appearSound.play()
-        item.body.reset(x, y)
-        item.setScale(2)
-        item.setActive(true)
-        item.setVisible(true)
-        item.setFrame(key)
-        item.scene.time.addEvent({
-          delay: 3000,
-          callback: () => {
-            item.emit('blink', {
-              blinkRate: 200,
-              blinkRepeat: 11,
-              useAlpha: true,
-              onBlinkComplete: () => item.kill(),
-            })
-          },
-        })
+        item.spawn(x, y)
       }
     }
   }
@@ -52,9 +37,31 @@ class Item extends Phaser.Physics.Arcade.Sprite {
     this.behaviors.set('blink', BLINK)
   }
 
+  spawn(x, y, key) {
+    this.body.reset(x, y)
+    this.setScale(2)
+    this.setActive(true)
+    this.setVisible(true)
+    this.setFrame(key)
+    this.event = this.scene.time.addEvent({
+      delay: 3000,
+      callback: () => {
+        this.emit('blink', {
+          blinkRate: 200,
+          blinkRepeat: 11,
+          useAlpha: true,
+          onBlinkComplete: () => this.kill(),
+        })
+      },
+    })
+  }
+
   kill() {
     this.pickupSound.play()
     this.setActive(false)
     this.setVisible(false)
+    if (this.event) {
+      this.event.destroy()
+    }
   }
 }

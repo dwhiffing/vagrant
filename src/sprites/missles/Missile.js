@@ -67,9 +67,9 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
     this.behaviors.set('scoreText', SCORE_TEXT)
   }
 
-  fire(x, y, target = this.scene.bot) {
-    this.emit('fire')
-    this.target = target
+  spawn(x, y) {
+    this.emit('spawn')
+    this.target = this.scene.bot
     this.body.reset(x, y)
     this.setActive(true)
     this.setVisible(true)

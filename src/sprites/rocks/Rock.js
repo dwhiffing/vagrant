@@ -36,8 +36,8 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
     this.behaviors.set('scoreText', SCORE_TEXT)
   }
 
-  fire(x, y, target = this.scene.bot) {
-    this.emit('fire')
+  spawn(x, y, target = this.scene.bot) {
+    this.emit('spawn')
     this.target = target
     this.body.reset(x, y)
     this.setActive(true)

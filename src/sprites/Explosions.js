@@ -17,7 +17,7 @@ export class Explosions extends Phaser.Physics.Arcade.Group {
   makeExplosion(x, y) {
     let explosion = this.getFirstDead(false)
     if (explosion) {
-      explosion.fire(x, y)
+      explosion.spawn(x, y)
       explosion.scale = this.scale
     }
   }
@@ -33,7 +33,7 @@ export class Explosion extends Phaser.Physics.Arcade.Sprite {
       frameRate: 20,
     })
   }
-  fire(x, y) {
+  spawn(x, y) {
     this.body.reset(x, y)
     this.enableBody()
     this.setActive(true)

@@ -1,24 +1,19 @@
-Add score numbers and multipliers
 Add wave spawning with specific layouts
-make enemy pools with specific amounts of each variant
-increase difficulty as score increases
-limit number of mines that can be placed:
-  at a time
-  in one second
+  make enemy pools with specific amounts of each variant?
+  increase difficulty as score increases
 
-extra life at 10k points
-add powerups
-  extra health
+Balance score amounts and add score multiplier
+  vary score text size.etc based on score amount
+  extra life at 10k points?
+
+powerup types
+  health
   shield
-  extra weapon
-  multiplier?
+  big mines
   point bonus?
 
 big rocks should split into smaller rocks on destroy?
-big rocks have powerups
-
-add sound effects
-add more visual affects
+add fire trail to rockets
 add screenshake and haptics
-
-Add shooting enemy type?
+Add shooting and moving enemy type
+Add straight shooting missiles

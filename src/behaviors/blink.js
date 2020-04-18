@@ -1,8 +1,11 @@
 export const BLINK = {
   $create: function (entity, options) {
-    entity.on('fire', () => {
-      entity.blinkEvent && entity.blinkEvent.destroy()
+    entity.on('spawn', () => {
+      if (entity.blinkEvent) entity.blinkEvent.destroy()
       entity.clearTint()
+    })
+    entity.on('kill', () => {
+      if (entity.blinkEvent) entity.blinkEvent.destroy()
     })
     entity.on('blink', (opts = {}) => {
       let i = 0
