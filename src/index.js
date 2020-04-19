@@ -10,7 +10,7 @@ const game = new Phaser.Game({
   transparent: true,
   type: Phaser.AUTO,
   parent: 'phaser-example',
-  backgroundColor: '#fff',
+  backgroundColor: '#000',
   width: isDesktop ? 1920 : 1080,
   height: 1920,
   scale: {
