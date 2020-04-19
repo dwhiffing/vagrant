@@ -4,7 +4,7 @@ export default class extends Phaser.Scene {
   }
 
   init(opts = {}) {
-    this.score = opts.score
+    this.score = opts.score || 0
   }
 
   create() {
@@ -41,7 +41,8 @@ export default class extends Phaser.Scene {
       this.scoreText.setOrigin(0.5)
     }
 
-    this.add.sprite(width / 2, height / 2, 'bot').setScale(1.5)
+    if (this.score === 0)
+      this.add.sprite(width / 2, height / 2, 'bot').setScale(1.5)
 
     this.add
       .sprite(width / 2, height - 300, 'button')
