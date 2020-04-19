@@ -46,7 +46,6 @@ export default class extends Phaser.Scene {
     this.load.image('bot', 'assets/images/ufoGreen.png')
     this.load.image('mine', 'assets/images/mine.png')
     this.load.image('target', 'assets/images/target.png')
-    this.load.image('button', 'assets/images/button.png')
     this.load.image('title', 'assets/images/title.png')
     this.load.image('smoke', 'assets/images/smoke2.png')
     this.load.image('healthBar', 'assets/images/health-bar.png')
@@ -56,6 +55,10 @@ export default class extends Phaser.Scene {
     this.load.image('shieldBarIn', 'assets/images/shield-bar-in.png')
     this.load.image('powerBar', 'assets/images/power-bar.png')
     this.load.image('powerBarIn', 'assets/images/power-bar-in.png')
+    this.load.spritesheet('button', 'assets/images/button.png', {
+      frameWidth: 400,
+      frameHeight: 200,
+    })
     this.load.spritesheet('life', 'assets/images/life.png', {
       frameWidth: 25,
       frameHeight: 25,

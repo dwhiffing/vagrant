@@ -1,6 +1,6 @@
 export default class extends Phaser.Scene {
   constructor() {
-    super({ key: 'Menu' })
+    super({ key: 'Credits' })
   }
 
   init(opts = {}) {
@@ -9,11 +9,6 @@ export default class extends Phaser.Scene {
 
   create() {
     const { height, width } = this.game.config
-
-    // this.sound.mute = true
-
-    this.music = this.sound.add('title', { loop: true, volume: 0.4 })
-    this.music.play()
 
     this.background = this.add.tileSprite(
       width / 2,
@@ -29,37 +24,49 @@ export default class extends Phaser.Scene {
     this.title.setOrigin(0.5, 0)
     this.title.setScale(0.65)
 
-    if (this.score) {
-      this.scoreText = this.add
-        .text(width / 2, height / 2, `Score: ${this.score}`, {
+    // TODO: write instructions
+    this.helpText = this.add
+      .text(
+        width / 2,
+        height / 2,
+        'In order to play\nfirst do this\nthen do that',
+        {
           fontFamily: 'Space Mono',
-          fontSize: 100,
+          fontSize: 48,
           align: 'center',
           color: '#ffffff',
-        })
-        .setShadow(2, 2, '#333333', 2, false, true)
-      this.scoreText.setOrigin(0.5)
-    }
+        },
+      )
+      .setShadow(2, 2, '#333333', 2, false, true)
+    this.helpText.setOrigin(0.5)
 
-    if (this.score === 0)
-      this.add.sprite(width / 2, height / 2, 'bot').setScale(1.5)
-
-    this.add
-      .sprite(width / 2, height - 380, 'button')
-      .setScale(1.2)
-      .setInteractive()
-      .on('pointerdown', () => {
-        this.music.stop()
-        this.scene.start('Game', { lives: 3 })
-      })
+    this.creditText = this.add
+      .text(
+        width / 2,
+        height - 450,
+        'Concept & Code: Daniel Whiffing\n\nArt & SFX: Kenney.nl\n\nMusic: Purple Planet',
+        {
+          fontFamily: 'Space Mono',
+          fontSize: 32,
+          align: 'center',
+          color: '#ffffff',
+        },
+      )
+      .setShadow(2, 2, '#333333', 2, false, true)
+    this.creditText.setOrigin(0.5)
 
     this.add
       .sprite(width / 2, height - 220, 'button')
       .setScale(1.2)
-      .setFrame(1)
+      .setFrame(2)
       .setInteractive()
       .on('pointerdown', () => {
-        this.scene.launch('Credits')
+        if (this.scene.isPaused('Game')) {
+          this.scene.resume('Game')
+          this.scene.stop()
+        } else {
+          this.scene.stop()
+        }
       })
 
     this.mute = this.add.image(

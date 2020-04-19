@@ -111,7 +111,10 @@ export default class extends Phaser.Scene {
         this.last = { x: this.target.x, y: this.target.y }
         this.touch = { x, y }
       }
-      if (!wasTouch || (id === 2 && this.input.pointer1.isDown)) {
+      if (
+        (!wasTouch || (id === 2 && this.input.pointer1.isDown)) &&
+        y < height - 150
+      ) {
         this.mines.spawn(this.bot.x, this.bot.y)
       }
     })

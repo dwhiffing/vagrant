@@ -44,13 +44,30 @@ export class Interface {
       this.scene.cameras.main.height - 150,
       'icon',
     )
-    this.mute.setOrigin(0)
-    this.mute.setFrame(this.scene.sound.mute ? 2 : 1)
-    this.mute.setInteractive().on('pointerdown', () => {
-      this.scene.sound.mute = !this.scene.sound.mute
-      this.mute.setFrame(this.scene.sound.mute ? 1 : 2)
-    })
-    this.mute.setDepth(10)
+    this.mute
+      .setDepth(10)
+      .setOrigin(0)
+      .setFrame(this.scene.sound.mute ? 2 : 1)
+      .setInteractive()
+      .on('pointerdown', () => {
+        this.scene.sound.mute = !this.scene.sound.mute
+        this.mute.setFrame(this.scene.sound.mute ? 1 : 2)
+      })
+
+    this.pause = scene.add.image(
+      50,
+      this.scene.cameras.main.height - 150,
+      'icon',
+    )
+    this.pause
+      .setDepth(10)
+      .setOrigin(0)
+      .setFrame(0)
+      .setInteractive()
+      .on('pointerdown', () => {
+        this.scene.scene.pause()
+        this.scene.scene.launch('Credits')
+      })
 
     this.life1 = scene.add.image(width - 1 * 85 - 10, 20, 'life')
     this.life1.setScale(3).setOrigin(0)
