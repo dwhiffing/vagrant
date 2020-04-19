@@ -1,3 +1,17 @@
+const INSTRUCTIONS = `Survive and thrive to top your score.
+        
+Drag with one thumb to move.
+Tap with the other to lay mines.
+        
+Your lives and health are at the top.
+Your ammo indicator is at the bottom.
+
+Items will be dropped by enemies;
+Collect them to get boosts or points.
+
+Enemies will get stronger as you progress.
+Good luck!`
+
 export default class extends Phaser.Scene {
   constructor() {
     super({ key: 'Credits' })
@@ -24,19 +38,13 @@ export default class extends Phaser.Scene {
     this.title.setOrigin(0.5, 0)
     this.title.setScale(0.65)
 
-    // TODO: write instructions
     this.helpText = this.add
-      .text(
-        width / 2,
-        height / 2,
-        'In order to play\nfirst do this\nthen do that',
-        {
-          fontFamily: 'Space Mono',
-          fontSize: 48,
-          align: 'center',
-          color: '#ffffff',
-        },
-      )
+      .text(width / 2, height / 2 - 200, INSTRUCTIONS, {
+        fontFamily: 'Space Mono',
+        fontSize: 42,
+        align: 'center',
+        color: '#ffffff',
+      })
       .setShadow(2, 2, '#333333', 2, false, true)
     this.helpText.setOrigin(0.5)
 
