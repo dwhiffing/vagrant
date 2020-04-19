@@ -1,4 +1,4 @@
-const OFFSET = 50
+const OFFSET = 100
 export const SPAWN = {
   options: {
     waves: [],

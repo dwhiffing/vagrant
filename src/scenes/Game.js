@@ -139,9 +139,10 @@ export default class extends Phaser.Scene {
     if (!this.waves[this.waveIndex + 1]) {
       this.waveIndex = -1
       let waves = EASY_WAVES
-      if (this.interface.score > MEDIUM_SCORE) {
+      if (this.interface.score >= MEDIUM_SCORE) {
         waves = MEDIUM_WAVES
-      } else if (this.interface.score > HARD_SCORE) {
+      }
+      if (this.interface.score >= HARD_SCORE) {
         waves = HARD_WAVES
       }
       this.waves = waves.map((wave) => sample(wave))

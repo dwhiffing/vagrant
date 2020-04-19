@@ -2,24 +2,44 @@ import { makeRandom, makeWall } from './utils'
 
 const WAVES = [
   {
-    rocks: [],
+    rocks: [
+      makeRandom({
+        waveDelay: 150,
+        size: 40,
+        type: 1,
+        directions: ['tr', 'bl'],
+      }),
+    ],
     missiles: [
       makeRandom({
-        waveDelay: 300,
-        size: 10,
+        waveDelay: 500,
+        size: 20,
+        type: 2,
+        directions: ['t', 'b', 'l', 'r'],
+      }),
+    ],
+  },
+  {
+    rocks: [
+      makeRandom({ waveDelay: 50, size: 40, type: 1, directions: ['t', 'b'] }),
+    ],
+    missiles: [
+      makeRandom({
+        waveDelay: 150,
+        size: 20,
         type: 1,
         directions: ['t', 'b', 'l', 'r'],
       }),
     ],
   },
   {
-    rocks: [makeRandom({ waveDelay: 100, size: 20, type: 1 })],
+    rocks: [makeRandom({ waveDelay: 250, size: 40, type: 0 })],
     missiles: [
       makeRandom({
-        waveDelay: 100,
-        size: 10,
-        type: 1,
-        directions: ['t', 'b'],
+        waveDelay: 250,
+        size: 40,
+        type: 0,
+        directions: ['t', 'b', 'l', 'r'],
       }),
     ],
   },
@@ -27,13 +47,34 @@ const WAVES = [
 
 const EVENTS = [
   {
-    rocks: [makeWall({ directions: ['r', 'l'], incX: 150, size: 8, type: 0 })],
+    rocks: [
+      makeWall({ directions: ['r'], incX: 150, size: 15, type: 0 }),
+      makeWall({ directions: ['l'], incX: 150, size: 15, type: 0 }),
+      makeWall({ size: 5, directions: ['t'], incY: 0, type: 2 }),
+      makeWall({ size: 5, directions: ['b'], incY: 0, type: 2 }),
+    ],
     missiles: [],
   },
   {
-    rocks: [makeWall({ direction: 'l' }), makeWall({ direction: 'r' })],
+    rocks: [
+      makeWall({ type: 0, direction: 't' }),
+      makeWall({ type: 2, size: 10, direction: 'l', delay: 1000 }),
+      makeWall({ type: 0, direction: 'b' }),
+      makeWall({ type: 2, size: 10, direction: 'r', delay: 1200 }),
+    ],
+    missiles: [],
+  },
+  {
+    rocks: [
+      makeWall({ type: 0, direction: 'l' }),
+      makeWall({ type: 2, size: 5, direction: 't', delay: 1000 }),
+      makeWall({ type: 0, direction: 'r' }),
+      makeWall({ type: 2, size: 5, direction: 'b', delay: 1200 }),
+    ],
     missiles: [],
   },
 ]
 
-export default [WAVES, EVENTS]
+const FIRST_WAVE = [WAVES[0]]
+
+export default [FIRST_WAVE, WAVES, EVENTS]
