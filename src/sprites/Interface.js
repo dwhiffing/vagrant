@@ -47,11 +47,13 @@ export class Interface {
     this.mute
       .setDepth(10)
       .setOrigin(0)
-      .setFrame(this.scene.sound.mute ? 2 : 1)
+      .setFrame(window.isMuted ? 2 : 1)
       .setInteractive()
       .on('pointerdown', () => {
-        this.scene.sound.mute = !this.scene.sound.mute
-        this.mute.setFrame(this.scene.sound.mute ? 1 : 2)
+        window.isMuted = !window.isMuted
+        this.scene.sound.mute = window.isMuted
+        localStorage.setItem('mute', window.isMuted ? 1 : 0)
+        this.mute.setFrame(window.isMuted ? 2 : 1)
       })
 
     this.pause = scene.add.image(

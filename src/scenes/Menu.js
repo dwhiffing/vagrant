@@ -10,8 +10,6 @@ export default class extends Phaser.Scene {
   create() {
     const { height, width } = this.game.config
 
-    // this.sound.mute = true
-
     this.music = this.sound.add('title', { loop: true, volume: 0.4 })
     this.music.play()
 
@@ -74,11 +72,12 @@ export default class extends Phaser.Scene {
       'icon',
     )
     this.mute.setOrigin(0)
-    this.mute.setFrame(1)
-    this.mute.setFrame(this.sound.mute ? 2 : 1)
+    this.mute.setFrame(window.isMuted ? 2 : 1)
     this.mute.setInteractive().on('pointerdown', () => {
-      this.sound.mute = !this.sound.mute
-      this.mute.setFrame(this.sound.mute ? 1 : 2)
+      window.isMuted = !window.isMuted
+      this.sound.mute = window.isMuted
+      localStorage.setItem('mute', window.isMuted ? 1 : 0)
+      this.mute.setFrame(window.isMuted ? 2 : 1)
     })
   }
 }

@@ -77,5 +77,18 @@ export default class extends Phaser.Scene {
           this.scene.stop()
         }
       })
+    this.mute = this.add.image(
+      this.cameras.main.width - 150,
+      this.cameras.main.height - 150,
+      'icon',
+    )
+    this.mute.setOrigin(0)
+    this.mute.setFrame(window.isMuted ? 2 : 1)
+    this.mute.setInteractive().on('pointerdown', () => {
+      window.isMuted = !window.isMuted
+      this.sound.mute = window.isMuted
+      localStorage.setItem('mute', window.isMuted ? 1 : 0)
+      this.mute.setFrame(window.isMuted ? 2 : 1)
+    })
   }
 }

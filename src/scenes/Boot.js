@@ -5,6 +5,8 @@ export default class extends Phaser.Scene {
 
   preload() {
     const progress = this.add.graphics()
+    window.isMuted = !!Number(localStorage.getItem('mute'))
+    this.sound.mute = window.isMuted
     this.load.on('progress', (value) => {
       progress.clear()
       progress.fillStyle(0xffffff, 1)
