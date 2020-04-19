@@ -3,7 +3,7 @@ export const BASE = {
   health: 20,
   frame: 1,
   scale: 1.5,
-  speed: 100,
+  speed: 180,
   size: 50,
   explosionDelay: 0,
   triggerRadius: 100,

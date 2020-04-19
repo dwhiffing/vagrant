@@ -13,16 +13,27 @@ import sample from 'lodash/sample'
 
 const MIN_EXPLODE_TIME = 500
 const MAX_EXPLODE_TIME = 1200
+const MISSILE_TYPES = [TYPES.normal, TYPES.fast, TYPES.big]
 
 export class Missile extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     super(scene, x, y, 'missile')
     this.setActive(false)
     this.setVisible(false)
-    this.opts = Phaser.Math.RND.pick([TYPES.normal, TYPES.fast, TYPES.big])
-    this.turnCounter = 0
-
+    scene.physics.world.enable(this)
     scene.behavior.enable(this)
+  }
+
+  init(type) {
+    this.type = type
+    this.opts = MISSILE_TYPES[type]
+    this.setScale(this.opts.scale)
+    this.health = this.opts.health
+    this.score = this.opts.score
+    this.explosionDamage = this.opts.explosionDamage
+    this.setFrame(this.opts.frame)
+    this.body.setSize(this.opts.size, this.opts.size, false)
+    this.body.setOffset(35, 35)
 
     this.behaviors.set('smoke', SMOKE, this.opts.smoke)
 
@@ -38,10 +49,10 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
 
     this.behaviors.set('moveToward', MOVE_TOWARD_TARGET, {
       speed: this.opts.speed,
-      target: scene.bot,
+      target: this.scene.bot,
       turnRate: this.opts.turnRate,
       getShouldAvoid: () =>
-        scene.missileGroup
+        this.scene.missileGroup
           .getChildren()
           .find(
             (m) =>
@@ -69,19 +80,14 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
 
   spawn(x, y) {
     this.emit('spawn')
+    this.health = this.opts.health
+    this.turnCounter = 0
     this.target = this.scene.bot
     this.body.reset(x, y)
     this.setActive(true)
     this.setVisible(true)
-    this.setScale(this.opts.scale)
-    this.health = this.opts.health
-    this.score = this.opts.score
-    this.explosionDamage = this.opts.explosionDamage
     this.enableBody()
     this.clearTint()
-    this.setFrame(this.opts.frame)
-    this.body.setSize(this.opts.size, this.opts.size, false)
-    this.body.setOffset(35, 35)
   }
 
   damage(amount, instakill = false) {

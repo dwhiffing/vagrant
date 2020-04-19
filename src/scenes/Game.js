@@ -6,6 +6,8 @@ import { Interface } from '../sprites/Interface'
 import { Target } from '../sprites/Target'
 import { Rocks } from '../sprites/rocks'
 import { Items } from '../sprites/items'
+import { WAVES } from '../waves'
+import sample from 'lodash/sample'
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -20,18 +22,33 @@ export default class extends Phaser.Scene {
 
   create() {
     const { width, height } = this.game.canvas
+    this.sendNextWave = this.sendNextWave.bind(this)
     this.behavior = this.plugins.get('BehaviorPlugin')
+    this.waves = WAVES.map((wave) => sample(wave))
+    this.waveIndex = -1
 
     this.background = this.add.existing(new Background(this, width, height))
+
     this.target = this.add.existing(new Target(this, width / 2, height / 2))
     this.mines = new Mines(this)
     this.items = new Items(this)
     this.bot = this.add.existing(new Bot(this, width / 2, height / 2))
+
     this.missileGroup = new Missiles(this)
     this.rockGroup = new Rocks(this)
+
     this.interface = new Interface(this, this.lives, this.score)
+
     this.music = this.sound.add('game', { loop: true, volume: 0.35 })
     this.music.play()
+
+    this.sendNextWave()
+    this.time.addEvent({
+      delay: 2000,
+      callback: this.sendNextWave,
+      callbackScope: this,
+      loop: true,
+    })
 
     this.physics.add.overlap(
       this.missileGroup,
@@ -85,6 +102,33 @@ export default class extends Phaser.Scene {
         this.target.setPosition(dX, dY)
       }
     })
+  }
+
+  sendNextWave() {
+    if (this.rockGroup.getFirstAlive() || this.missileGroup.getFirstAlive()) {
+      return
+    }
+    if (!this.waves[this.waveIndex + 1]) {
+      this.waveIndex = -1
+    }
+
+    this.waveIndex++
+
+    const { rocks, missiles } = this.waves[this.waveIndex] || {}
+
+    const spawn = (group) => (spawn, index, spawns) => {
+      const extraDelay = spawns
+        .slice(0, index)
+        .reduce((sum, spawn) => sum + (spawn.delay || 0), 0)
+      this.time.addEvent({
+        delay: extraDelay + (spawn.delay || 2000),
+        callback: () => group.spawnWave(spawn),
+        callbackScope: this,
+      })
+    }
+
+    rocks.forEach(spawn(this.rockGroup))
+    missiles.forEach(spawn(this.missileGroup))
   }
 
   update() {

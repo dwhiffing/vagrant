@@ -7,18 +7,31 @@ import {
 } from '../../behaviors'
 import { TYPES } from './types'
 
+const ROCK_TYPES = [TYPES.normal, TYPES.fast, TYPES.big]
 export class Rock extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     super(scene, x, y, 'rock')
-
-    this.opts = Phaser.Math.RND.pick([TYPES.normal, TYPES.fast, TYPES.big])
     this.setActive(false)
     this.setVisible(false)
-    this.score = this.opts.score
-    this.health = this.opts.health
-    this.setFrame(this.opts.frame)
-
     scene.behavior.enable(this)
+    scene.physics.world.enable(this)
+  }
+
+  init(type) {
+    this.opts = ROCK_TYPES[type]
+    this.health = this.opts.health
+    this.type = type
+    this.score = this.opts.score
+    this.explosionDamage = this.opts.explosionDamage
+    this.setFrame(this.opts.frame)
+    this.setScale(this.opts.scale)
+    this.body.setSize(this.opts.size, this.opts.size, false)
+    this.body.setOffset(25, 25)
+
+    this.behaviors.set('blink', BLINK)
+    this.behaviors.set('destroyOutOfBounds', DESTROY_OUT_OF_BOUNDS)
+    this.behaviors.set('dropItem', DROP_ITEM)
+    this.behaviors.set('scoreText', SCORE_TEXT)
 
     this.behaviors.set('explode', EXPLODE, {
       getTargets: () => [this.scene.bot],
@@ -29,20 +42,13 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
       triggerRadius: this.opts.triggerRadius,
       explosionRadius: this.opts.explosionRadius,
     })
-
-    this.behaviors.set('blink', BLINK)
-    this.behaviors.set('destroyOutOfBounds', DESTROY_OUT_OF_BOUNDS)
-    this.behaviors.set('dropItem', DROP_ITEM)
-    this.behaviors.set('scoreText', SCORE_TEXT)
   }
 
-  spawn(x, y, target = this.scene.bot) {
-    this.emit('spawn')
-    this.target = target
-    this.body.reset(x, y)
+  spawn(x, y) {
+    this.health = this.opts.health
     this.setActive(true)
     this.setVisible(true)
-    this.setScale(this.opts.scale)
+    this.body.reset(x, y)
     this.enableBody()
     const speed = this.opts.speed
     this.body.setVelocity(x < 0 ? speed : -speed, 0)
@@ -54,9 +60,6 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
       25,
       -25,
     ])
-    this.explosionDamage = this.opts.explosionDamage
-    this.body.setSize(this.opts.size, this.opts.size, false)
-    this.body.setOffset(25, 25)
   }
 
   damage(amount) {
