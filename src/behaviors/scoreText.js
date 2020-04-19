@@ -2,27 +2,25 @@ export const SCORE_TEXT = {
   options: {},
 
   $create: function (entity, opts) {
-    entity.on('score', (opts = {}) => {
-      if (entity.scoreText) {
-        entity.scoreText.destroy()
+    entity.scoreText = entity.scene.add.text(0, 0, '', { fontSize: 60 })
+    entity.scoreText.setShadow(2, 2, '#333333', 2, true, true)
+
+    entity.on('scoreText', (opts = {}) => {
+      entity.scoreText.setActive(true)
+      entity.scoreText.x = entity.x
+      entity.scoreText.y = entity.y
+      entity.scoreText.alpha = 1
+      if (entity.scoreText.frame.data) {
+        entity.scoreText.setText(`${opts.amount || entity.score}`)
       }
-      entity.scoreText = entity.scene.add.text(
-        entity.x,
-        entity.y,
-        opts.amount || entity.score,
-        { fontSize: 60 },
-      )
-      entity.scoreText.setShadow(2, 2, '#333333', 2, true, true)
     })
   },
 
   update: function (entity) {
-    if (entity.scoreText) {
+    if (entity.scoreText.active) {
       entity.scoreText.y -= 1
       entity.scoreText.alpha -= 0.01
-      if (entity.scoreText.alpha <= 0) {
-        entity.scoreText.destroy()
-      }
+      if (entity.scoreText.alpha <= 0) entity.scoreText.setActive(false)
     }
   },
 }

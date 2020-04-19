@@ -88,7 +88,7 @@ export default class extends Phaser.Scene {
           bot.giveShield()
         } else if (item.type === 3) {
           this.events.emit('score', { amount: 1000 })
-          bot.emit('score', { amount: 1000 })
+          bot.emit('scoreText', { amount: 1000 })
         }
       }
     })

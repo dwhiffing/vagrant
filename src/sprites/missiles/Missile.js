@@ -11,8 +11,8 @@ import {
 import { TYPES } from './types'
 import sample from 'lodash/sample'
 
-const MIN_EXPLODE_TIME = 500
-const MAX_EXPLODE_TIME = 1200
+const MIN_EXPLODE_TIME = 300
+const MAX_EXPLODE_TIME = 800
 const MISSILE_TYPES = [TYPES.normal, TYPES.fast, TYPES.big]
 
 export class Missile extends Phaser.Physics.Arcade.Sprite {
@@ -96,6 +96,17 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
 
     this.emit('blink', { blinkRepeat: 1, blinkRate: 50 })
     if (this.health <= 0) {
+      // TODO: combine these
+      this.emit('scoreText')
+      this.scene.events.emit('score', { amount: this.score })
+
+      if (instakill || Math.random() > 0.5) {
+        this.kill({ triggerPowerup })
+        return
+      }
+
+      this.explosionDamage = 0
+      this.emit('blink', { blinkRate: 150, blinkRepeat: 13 })
       const target = sample([
         [0, 0],
         [this.scene.cameras.main.width, 0],
@@ -104,25 +115,9 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
       ])
       this.target = { x: target[0], y: target[1], active: true }
 
-      this.emit('blink', {
-        blinkRate: 150,
-        blinkRepeat: 13,
-      })
-      this.explosionDamage = 0
-      this.emit('score')
-      this.scene.events.emit('score', { amount: this.score })
-
-      if (!instakill) {
-        instakill = Math.random() > 0.4
-      }
-
       this.scene.time.addEvent({
-        delay: instakill
-          ? 0
-          : Phaser.Math.RND.between(MIN_EXPLODE_TIME, MAX_EXPLODE_TIME),
-        callback: () => {
-          this.kill({ triggerPowerup })
-        },
+        delay: Phaser.Math.RND.between(MIN_EXPLODE_TIME, MAX_EXPLODE_TIME),
+        callback: () => this.kill({ triggerPowerup }),
       })
     }
   }
