@@ -51,10 +51,10 @@ export default class extends Phaser.Scene {
     this.events.on('shake', ({ type = 'small' } = {}) => {
       if (type === 'small') {
         this.cameras.main.shake(200, 0.01)
-        navigator.vibrate(100)
+        navigator.vibrate && navigator.vibrate(100)
       } else if (type === 'medium') {
         this.cameras.main.shake(300, 0.02)
-        navigator.vibrate(200)
+        navigator.vibrate && navigator.vibrate(200)
       }
     })
 
