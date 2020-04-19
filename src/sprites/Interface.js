@@ -75,6 +75,12 @@ export class Interface {
       }
     })
 
+    this.scene.events.on('wave', (opts) => {
+      if (this.waveText.frame.data) {
+        this.waveText.text = `${this.scene.totalWaves}`
+      }
+    })
+
     this.scene.events.on('health', (opts) => {
       this.healthBarIn.scaleX = 2.5 * (opts.health / 100)
     })
@@ -122,5 +128,14 @@ export class Interface {
       })
       .setShadow(2, 2, '#333333', 2, false, true)
     this.scoreText.setOrigin(0.5, 0)
+
+    this.waveText = scene.add
+      .text(width / 2, 90, this.scene.totalWaves, {
+        fontFamily: 'Space Mono',
+        fontSize: 30,
+        color: '#ffffff',
+      })
+      .setShadow(2, 2, '#333333', 2, false, true)
+    this.waveText.setOrigin(0.5, 0)
   }
 }

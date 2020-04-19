@@ -9,6 +9,9 @@ import { Items } from '../sprites/items'
 import { EASY_WAVES, MEDIUM_WAVES, HARD_WAVES } from '../waves'
 import sample from 'lodash/sample'
 
+const MEDIUM_SCORE = 5000
+const HARD_SCORE = 10000
+
 export default class extends Phaser.Scene {
   constructor() {
     super({ key: 'Game' })
@@ -18,6 +21,7 @@ export default class extends Phaser.Scene {
     this.lives = opts.lives || 3
     this.score = opts.score || 0
     this.iter = 0
+    this.totalWaves = 0
   }
 
   create() {
@@ -26,6 +30,8 @@ export default class extends Phaser.Scene {
     this.behavior = this.plugins.get('BehaviorPlugin')
     this.waveIndex = -1
     this.waves = []
+    this.bonusKillCount = 0
+    this.bonusKillCountGoal = Phaser.Math.RND.between(6, 20)
 
     this.background = this.add.existing(new Background(this, width, height))
 
@@ -54,7 +60,7 @@ export default class extends Phaser.Scene {
 
     this.sendNextWave()
     this.time.addEvent({
-      delay: 2000,
+      delay: 1000,
       callback: this.sendNextWave,
       callbackScope: this,
       loop: true,
@@ -65,8 +71,8 @@ export default class extends Phaser.Scene {
       this.rockGroup,
       (obj1, obj2) => {
         if (obj1.active && obj2.active) {
-          obj1.damage(obj2.explosionDamage, true)
-          obj2.damage(obj1.explosionDamage, true)
+          obj1.damage(obj2.explosionDamage, true, false)
+          obj2.damage(obj1.explosionDamage, true, false)
         }
       },
     )
@@ -75,7 +81,7 @@ export default class extends Phaser.Scene {
       if (bot.active && item.active) {
         item.kill()
         if (item.type === 0) {
-          bot.heal(10)
+          bot.heal(20)
         } else if (item.type === 1) {
           bot.givePower()
         } else if (item.type === 2) {
@@ -124,21 +130,22 @@ export default class extends Phaser.Scene {
   }
 
   sendNextWave() {
-    if (this.missileGroup.getFirstAlive()) {
+    if (this.missileGroup.getFirstAlive() || this.rockGroup.getFirstAlive()) {
       return
     }
     if (!this.waves[this.waveIndex + 1]) {
       this.waveIndex = -1
       let waves = EASY_WAVES
-      if (this.interface.score > 500) {
+      if (this.interface.score > MEDIUM_SCORE) {
         waves = MEDIUM_WAVES
-      } else if (this.interface.score > 1000) {
+      } else if (this.interface.score > HARD_SCORE) {
         waves = HARD_WAVES
       }
       this.waves = waves.map((wave) => sample(wave))
     }
-
+    this.totalWaves++
     this.waveIndex++
+    this.events.emit('wave')
 
     const { rocks, missiles } = this.waves[this.waveIndex] || {}
 
