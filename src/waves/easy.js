@@ -16,7 +16,6 @@ const FIRST_WAVE = [
 ]
 
 const WAVES = [
-  // 5 basic missiles, no rocks
   {
     rocks: [makeRandom({ waveDelay: 2000, size: 8, type: 0 })],
     missiles: [
@@ -28,6 +27,7 @@ const WAVES = [
       }),
     ],
   },
+  // vertical rocks and normal missiles
   {
     rocks: [
       makeRandom({
@@ -43,13 +43,45 @@ const WAVES = [
         directions: ['t', 'b'],
       }),
     ],
+    missiles: [makeRandom({ waveDelay: 4000, size: 6, type: 0 })],
+  },
+  // diagonal rocks and fast missiles
+  {
+    rocks: [
+      makeRandom({
+        waveDelay: 1000,
+        size: 20,
+        type: 0,
+        directions: ['tl', 'br'],
+      }),
+    ],
     missiles: [
       makeRandom({
-        delay: 3000,
-        waveDelay: 6000,
+        waveDelay: 3000,
         size: 6,
-        type: 0,
+        type: 1,
       }),
+    ],
+  },
+  // horizontal rocks and small/big missiles
+  {
+    rocks: [
+      makeRandom({
+        waveDelay: 1000,
+        size: 15,
+        type: 0,
+        directions: ['l', 'r'],
+      }),
+      makeRandom({
+        waveDelay: 600,
+        size: 20,
+        type: 1,
+        directions: ['l', 'r'],
+      }),
+    ],
+    missiles: [
+      makeRandom({ waveDelay: 3000, size: 6, type: 0 }),
+      makeRandom({ waveDelay: 8000, size: 3, type: 2 }),
     ],
   },
 ]
