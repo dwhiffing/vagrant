@@ -65,6 +65,4 @@ const EVENTS = [
   },
 ]
 
-const FIRST_WAVE = [WAVES[0]]
-
-export default [FIRST_WAVE, WAVES, EVENTS]
+export default [WAVES, EVENTS]

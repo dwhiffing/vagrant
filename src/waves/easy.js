@@ -1,6 +1,6 @@
 import { makeRandom, makeWall } from './utils'
 
-const FIRST_WAVE = [
+export const FIRST_WAVE = [
   // 5 basic missiles, no rocks
   {
     rocks: [],
@@ -43,7 +43,7 @@ const WAVES = [
         directions: ['t', 'b'],
       }),
     ],
-    missiles: [makeRandom({ waveDelay: 4000, size: 6, type: 0 })],
+    missiles: [makeRandom({ waveDelay: 2000, size: 15, type: 0 })],
   },
   // diagonal rocks and fast missiles
   {
@@ -57,8 +57,8 @@ const WAVES = [
     ],
     missiles: [
       makeRandom({
-        waveDelay: 3000,
-        size: 6,
+        waveDelay: 2000,
+        size: 10,
         type: 1,
       }),
     ],
@@ -80,7 +80,7 @@ const WAVES = [
       }),
     ],
     missiles: [
-      makeRandom({ waveDelay: 3000, size: 6, type: 0 }),
+      makeRandom({ waveDelay: 3000, size: 8, type: 0 }),
       makeRandom({ waveDelay: 8000, size: 3, type: 2 }),
     ],
   },
@@ -126,6 +126,6 @@ const EVENTS = [
   },
 ]
 
-const EASY_WAVES = [FIRST_WAVE, WAVES, EVENTS]
+const EASY_WAVES = [WAVES, EVENTS]
 
 export default EASY_WAVES

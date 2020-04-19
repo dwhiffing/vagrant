@@ -6,7 +6,7 @@ import { Interface } from '../sprites/Interface'
 import { Target } from '../sprites/Target'
 import { Rocks } from '../sprites/rocks'
 import { Items } from '../sprites/items'
-import { EASY_WAVES, MEDIUM_WAVES, HARD_WAVES } from '../waves'
+import { FIRST_WAVE, EASY_WAVES, MEDIUM_WAVES, HARD_WAVES } from '../waves'
 import sample from 'lodash/sample'
 
 const MEDIUM_SCORE = 5000
@@ -133,7 +133,10 @@ export default class extends Phaser.Scene {
   }
 
   sendNextWave() {
-    if (this.missileGroup.getFirstAlive() || this.rockGroup.getFirstAlive()) {
+    if (
+      this.missileGroup.getFirstAlive() ||
+      this.rockGroup.getChildren().filter((c) => c.active).length > 5
+    ) {
       return
     }
     if (!this.waves[this.waveIndex + 1]) {
@@ -146,6 +149,10 @@ export default class extends Phaser.Scene {
         waves = HARD_WAVES
       }
       this.waves = waves.map((wave) => sample(wave))
+      if (!this.firstWave) {
+        this.firstWave = true
+        this.waves = FIRST_WAVE
+      }
     }
     this.totalWaves++
     this.waveIndex++
