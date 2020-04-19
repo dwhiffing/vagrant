@@ -2,9 +2,7 @@ export const BLINK = {
   $create: function (entity, options) {
     entity.on('spawn', () => {
       if (entity.blinkEvent) entity.blinkEvent.destroy()
-      setTimeout(() => {
-        entity.clearTint()
-      }, 100)
+      entity.clearTint()
     })
     entity.on('kill', () => {
       if (entity.blinkEvent) entity.blinkEvent.destroy()
@@ -16,10 +14,8 @@ export const BLINK = {
         delay: opts.blinkRate,
         repeat: opts.blinkRepeat,
         callback: () => {
-          if (i++ === opts.blinkRepeat + 1) {
+          if (i++ === opts.blinkRepeat) {
             opts.onBlinkComplete && opts.onBlinkComplete()
-            entity.clearTint()
-            return
           }
           if (opts.useAlpha) {
             entity.alpha = entity.alpha === 1 ? 0.2 : 1
