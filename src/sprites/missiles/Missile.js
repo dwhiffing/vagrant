@@ -91,7 +91,7 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
     this.explosionDamage = this.opts.explosionDamage
   }
 
-  damage(amount, instakill = false) {
+  damage(amount, instakill = false, triggerPowerup = false) {
     this.health -= amount
 
     this.emit('blink', { blinkRepeat: 1, blinkRate: 50 })
@@ -121,15 +121,15 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
           ? 0
           : Phaser.Math.RND.between(MIN_EXPLODE_TIME, MAX_EXPLODE_TIME),
         callback: () => {
-          this.kill()
+          this.kill({ triggerPowerup })
         },
       })
     }
   }
 
-  kill({ shouldDamage = false } = {}) {
+  kill({ shouldDamage = false, triggerPowerup = false } = {}) {
     if (this.visible) {
-      this.emit('kill', { shouldDamage })
+      this.emit('kill', { shouldDamage, triggerPowerup })
     }
     this.disableBody()
     this.setActive(false)

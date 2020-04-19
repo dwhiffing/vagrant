@@ -36,7 +36,7 @@ export const EXPLODE = {
       key: opts.explosionKey,
     })
 
-    entity.on('kill', (opts) => {
+    entity.on('kill', (opts = {}) => {
       entity.explosionGroup.makeExplosion(
         entity.x,
         entity.y,
@@ -52,7 +52,9 @@ export const EXPLODE = {
           .filter((target) =>
             withinDistance(entity, target, entity.explosionRadius),
           )
-          .forEach((target) => target.damage(entity.explosionDamage))
+          .forEach((target) =>
+            target.damage(entity.explosionDamage, false, true),
+          )
       }
     })
   },

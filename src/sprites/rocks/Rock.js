@@ -62,20 +62,20 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
     ])
   }
 
-  damage(amount) {
+  damage(amount, instakill = false, triggerPowerup = false) {
     this.health -= amount
     this.emit('blink', { blinkRepeat: 1, blinkRate: 50 })
 
     if (this.health <= 0) {
       this.scene.events.emit('score', { amount: this.score })
       this.emit('score')
-      this.kill()
+      this.kill({ triggerPowerup })
     }
   }
 
-  kill({ shouldDamage = false } = {}) {
+  kill({ shouldDamage = false, triggerPowerup = false } = {}) {
     if (this.visible) {
-      this.emit('kill', { shouldDamage })
+      this.emit('kill', { shouldDamage, triggerPowerup })
     }
     this.disableBody()
     this.setActive(false)
