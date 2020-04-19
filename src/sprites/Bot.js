@@ -35,6 +35,7 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
       triggerRadius: 0,
       explosionKey: 'explosion-3',
       explosionSound: 'death',
+      explosionVolume: 5,
       explosionRadius: 350,
     })
     this.behaviors.set('scoreText', SCORE_TEXT)

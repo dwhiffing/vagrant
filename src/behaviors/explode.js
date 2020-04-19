@@ -12,6 +12,7 @@ export const EXPLODE = {
     explosionRadius: 50,
     explosionKey: 'explosion-2',
     explosionSound: 'explosion3',
+    explosionVolume: 1.2,
     getShouldExplode: () => true,
   },
 
@@ -23,7 +24,7 @@ export const EXPLODE = {
     entity.getShouldExplode = opts.getShouldExplode
     entity.getTargets = opts.getTargets
     entity.explosionSound = entity.scene.sound.add(opts.explosionSound, {
-      volume: 1.2,
+      volume: opts.explosionVolume,
     })
     entity.explosionGroup = new Explosions(entity.scene, {
       scale:
