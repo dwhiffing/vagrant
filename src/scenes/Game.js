@@ -1,4 +1,4 @@
-import { Missiles } from '../sprites/missles'
+import { Missiles } from '../sprites/missiles'
 import { Background } from '../sprites/Background'
 import { Mines } from '../sprites/Mines'
 import { Bot } from '../sprites/Bot'
@@ -6,7 +6,7 @@ import { Interface } from '../sprites/Interface'
 import { Target } from '../sprites/Target'
 import { Rocks } from '../sprites/rocks'
 import { Items } from '../sprites/items'
-import { WAVES } from '../waves'
+import { EASY_WAVES, MEDIUM_WAVES, HARD_WAVES } from '../waves'
 import sample from 'lodash/sample'
 
 export default class extends Phaser.Scene {
@@ -24,8 +24,8 @@ export default class extends Phaser.Scene {
     const { width, height } = this.game.canvas
     this.sendNextWave = this.sendNextWave.bind(this)
     this.behavior = this.plugins.get('BehaviorPlugin')
-    this.waves = WAVES.map((wave) => sample(wave))
     this.waveIndex = -1
+    this.waves = []
 
     this.background = this.add.existing(new Background(this, width, height))
 
@@ -70,7 +70,7 @@ export default class extends Phaser.Scene {
 
     this.events.on('gameOver', () => {
       this.music.stop()
-      this.scene.start('Menu', { score: this.score })
+      this.scene.start('Menu', { score: this.interface.score })
     })
 
     this.touch = { x: width / 2, y: height / 2 }
@@ -105,11 +105,19 @@ export default class extends Phaser.Scene {
   }
 
   sendNextWave() {
-    if (this.rockGroup.getFirstAlive() || this.missileGroup.getFirstAlive()) {
+    if (this.missileGroup.getFirstAlive()) {
       return
     }
     if (!this.waves[this.waveIndex + 1]) {
       this.waveIndex = -1
+      let waves = EASY_WAVES
+      if (this.interface.score > 500) {
+        waves = MEDIUM_WAVES
+      } else if (this.interface.score > 1000) {
+        waves = HARD_WAVES
+      }
+      console.log('end', this.interface.score, waves)
+      this.waves = waves.map((wave) => sample(wave))
     }
 
     this.waveIndex++

@@ -111,6 +111,10 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
       this.emit('score')
       this.scene.events.emit('score', { amount: this.score })
 
+      if (!instakill) {
+        instakill = Math.random() > 0.4
+      }
+
       this.scene.time.addEvent({
         delay: instakill
           ? 0

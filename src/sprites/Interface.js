@@ -8,10 +8,12 @@ export class Interface {
     this.background = scene.add.image(20, 20, 'healthBar')
     this.background.setOrigin(0)
     this.background.setScale(2.5)
+    this.background.setDepth(9)
 
     this.bar = scene.add.image(43, 39, 'healthBarIn')
     this.bar.setOrigin(0)
     this.bar.setScale(2.5)
+    this.bar.setDepth(10)
 
     this.mute = scene.add.image(
       this.scene.cameras.main.width - 150,
@@ -24,6 +26,7 @@ export class Interface {
       this.scene.sound.mute = !this.scene.sound.mute
       this.mute.setFrame(this.scene.sound.mute ? 1 : 2)
     })
+    this.mute.setDepth(10)
 
     this.life1 = scene.add.image(width - 1 * 85 - 10, 20, 'life')
     this.life1.setScale(3).setOrigin(0)
@@ -37,6 +40,9 @@ export class Interface {
     if (this.lives < 2) {
       this.life2.setFrame(1)
     }
+    this.life1.setDepth(10)
+    this.life2.setDepth(10)
+    this.life3.setDepth(10)
 
     this.scene.events.on('score', (opts) => {
       this.score += opts.amount
