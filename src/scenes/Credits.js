@@ -41,7 +41,7 @@ export default class extends Phaser.Scene {
     this.helpText = this.add
       .text(width / 2, height / 2 - 200, INSTRUCTIONS, {
         fontFamily: 'Space Mono',
-        fontSize: 42,
+        fontSize: 38,
         align: 'center',
         color: '#ffffff',
       })
