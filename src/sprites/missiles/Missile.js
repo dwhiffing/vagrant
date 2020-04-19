@@ -88,6 +88,7 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
     this.setVisible(true)
     this.enableBody()
     this.clearTint()
+    this.explosionDamage = this.opts.explosionDamage
   }
 
   damage(amount, instakill = false) {

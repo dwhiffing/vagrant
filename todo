@@ -1,17 +1,12 @@
-increase difficulty as score increases
+add more wave types and balance
+Balance missile and rock stats
 
-Balance score amounts and add score multiplier
-  vary score text size.etc based on score amount
-  extra life at 10k points?
-
-powerup types
-  health
-  shield
-  big mines
-  point bonus?
-
-big rocks should split into smaller rocks on destroy?
+fix bug with blink staying active on new rockets
+extra life at 10k points?
 add fire trail to rockets
 add screenshake and haptics
-Add shooting and moving enemy type
-Add straight shooting missiles
+
+big rocks should split into smaller rocks on destroy?
+add score multiplier?
+vary score text size.etc based on score amount?
+Add shooting and moving enemy type?

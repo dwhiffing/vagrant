@@ -52,6 +52,11 @@ export default class extends Phaser.Scene {
     this.load.image('smoke', 'assets/images/smoke2.png')
     this.load.image('healthBar', 'assets/images/health-bar.png')
     this.load.image('healthBarIn', 'assets/images/health-bar-in.png')
+    this.load.image('shieldBar', 'assets/images/shield-bar.png')
+    this.load.image('shield', 'assets/images/shield.png')
+    this.load.image('shieldBarIn', 'assets/images/shield-bar-in.png')
+    this.load.image('powerBar', 'assets/images/power-bar.png')
+    this.load.image('powerBarIn', 'assets/images/power-bar-in.png')
     this.load.spritesheet('life', 'assets/images/life.png', {
       frameWidth: 25,
       frameHeight: 25,
@@ -72,8 +77,8 @@ export default class extends Phaser.Scene {
     })
 
     this.load.spritesheet('explosion', 'assets/images/explosion.png', {
-      frameWidth: 128,
-      frameHeight: 128,
+      frameWidth: 32,
+      frameHeight: 32,
     })
 
     this.load.spritesheet('explosion-2', 'assets/images/explosion-2.png', {

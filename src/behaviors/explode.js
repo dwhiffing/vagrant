@@ -16,7 +16,7 @@ export const EXPLODE = {
   },
 
   $create: function (entity, opts) {
-    entity.radius = opts.explosionRadius
+    entity.explosionRadius = opts.explosionRadius
     entity.triggerRadius = opts.triggerRadius
     entity.explosionDelay = opts.explosionDelay
     entity.explosionDamage = opts.explosionDamage
@@ -37,12 +37,18 @@ export const EXPLODE = {
     })
 
     entity.on('kill', (opts) => {
-      entity.explosionGroup.makeExplosion(entity.x, entity.y)
+      entity.explosionGroup.makeExplosion(
+        entity.x,
+        entity.y,
+        Math.max(4, (entity.explosionRadius || 30) / 30),
+      )
       entity.explosionSound.play()
       if (opts.shouldDamage) {
         entity
           .getTargets()
-          .filter((target) => withinDistance(entity, target, entity.radius))
+          .filter((target) =>
+            withinDistance(entity, target, entity.explosionRadius),
+          )
           .forEach((target) => target.damage(entity.explosionDamage))
       }
     })

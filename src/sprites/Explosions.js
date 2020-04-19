@@ -14,11 +14,11 @@ export class Explosions extends Phaser.Physics.Arcade.Group {
     })
     this.scale = opts.scale
   }
-  makeExplosion(x, y) {
+  makeExplosion(x, y, scale = this.scale) {
     let explosion = this.getFirstDead()
     if (explosion) {
       explosion.spawn(x, y)
-      explosion.scale = this.scale
+      explosion.scale = scale
     }
   }
 }

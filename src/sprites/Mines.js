@@ -31,8 +31,20 @@ export class Mines extends Phaser.Physics.Arcade.Group {
     this.canLay = false
     mine.body.reset(x, y)
     mine.setActive(true)
-    mine.setScale(4)
     mine.setVisible(true)
+
+    if (this.scene.bot.power > 0) {
+      this.scene.bot.usePower()
+      mine.setScale(8)
+      mine.triggerRadius = 500
+      mine.explosionRadius = 500
+      mine.explosionDamage = 200
+    } else {
+      mine.setScale(4)
+      mine.triggerRadius = 180
+      mine.explosionRadius = 200
+      mine.explosionDamage = 20
+    }
     this.scene.time.addEvent({
       delay: 500,
       callback: () => (this.canLay = true),

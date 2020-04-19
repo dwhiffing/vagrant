@@ -20,9 +20,10 @@ export class Items extends Phaser.Physics.Arcade.Group {
   spawn(x, y, key) {
     if (this.countActive(true) < 10) {
       let item = this.getFirstDead()
+      item.type = key
       if (item) {
         this.appearSound.play()
-        item.spawn(x, y)
+        item.spawn(x, y, key)
       }
     }
   }

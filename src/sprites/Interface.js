@@ -5,15 +5,39 @@ export class Interface {
     this.scene = scene
     this.score = score || 0
 
-    this.background = scene.add.image(20, 20, 'healthBar')
-    this.background.setOrigin(0)
-    this.background.setScale(2.5)
-    this.background.setDepth(9)
+    this.healthBar = scene.add.image(20, 20, 'healthBar')
+    this.healthBar.setOrigin(0)
+    this.healthBar.setScale(2.5)
+    this.healthBar.setDepth(9)
 
-    this.bar = scene.add.image(43, 39, 'healthBarIn')
-    this.bar.setOrigin(0)
-    this.bar.setScale(2.5)
-    this.bar.setDepth(10)
+    this.healthBarIn = scene.add.image(43, 39, 'healthBarIn')
+    this.healthBarIn.setOrigin(0)
+    this.healthBarIn.setScale(2.5)
+    this.healthBarIn.setDepth(10)
+
+    this.shieldBar = scene.add.image(20, 110, 'shieldBar')
+    this.shieldBar.setOrigin(0)
+    this.shieldBar.setScale(2.4, 2)
+    this.shieldBar.setDepth(9)
+
+    this.shieldBarIn = scene.add.image(43, 120, 'shieldBarIn')
+    this.shieldBarIn.setOrigin(0)
+    this.shieldBarIn.setScale(2.2, 1.8)
+    this.shieldBarIn.setDepth(10)
+    this.shieldBar.setVisible(false)
+    this.shieldBarIn.setVisible(false)
+
+    this.powerBar = scene.add.image(width - 220, 100, 'powerBar')
+    this.powerBar.setOrigin(0)
+    this.powerBar.setScale(2.5)
+    this.powerBar.setDepth(9)
+
+    this.powerBarIn = scene.add.image(width - 200, 118, 'powerBarIn')
+    this.powerBarIn.setOrigin(0)
+    this.powerBarIn.setScale(2.5)
+    this.powerBarIn.setDepth(10)
+    this.powerBar.setVisible(false)
+    this.powerBarIn.setVisible(false)
 
     this.mute = scene.add.image(
       this.scene.cameras.main.width - 150,
@@ -52,7 +76,19 @@ export class Interface {
     })
 
     this.scene.events.on('health', (opts) => {
-      this.bar.scaleX = 2.5 * (opts.health / 100)
+      this.healthBarIn.scaleX = 2.5 * (opts.health / 100)
+    })
+
+    this.scene.events.on('shield', (opts) => {
+      this.shieldBarIn.scaleX = 2.2 * (opts.shield / 100)
+      this.shieldBar.setVisible(opts.shield > 0)
+      this.shieldBarIn.setVisible(opts.shield > 0)
+    })
+
+    this.scene.events.on('power', (opts) => {
+      this.powerBarIn.scaleX = 2.5 * (opts.power / 100)
+      this.powerBar.setVisible(opts.power > 0)
+      this.powerBarIn.setVisible(opts.power > 0)
     })
 
     this.scene.events.on('loseLife', () => {

@@ -41,6 +41,12 @@ export const MOVE_TOWARD_TARGET = {
       }
     }
 
+    if (entity.shieldSprite) {
+      entity.shieldSprite.x = entity.x
+      entity.shieldSprite.y = entity.y
+      entity.shieldSprite.angle = entity.angle + 90
+    }
+
     const speed = entity.speed * entity.stallSpeed
     const distance = Phaser.Math.Distance.Between(entity.x, entity.y, x, y)
     const velocity = distance < entity.speed * 0.05 ? 0 : speed

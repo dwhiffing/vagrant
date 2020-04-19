@@ -64,7 +64,16 @@ export default class extends Phaser.Scene {
     this.physics.add.overlap(this.items, this.bot, (bot, item) => {
       if (bot.active && item.active) {
         item.kill()
-        bot.heal(20)
+        if (item.type === 0) {
+          bot.heal(10)
+        } else if (item.type === 1) {
+          bot.givePower()
+        } else if (item.type === 2) {
+          bot.giveShield()
+        } else if (item.type === 3) {
+          this.events.emit('score', { amount: 1000 })
+          bot.emit('score', { amount: 1000 })
+        }
       }
     })
 
@@ -116,7 +125,6 @@ export default class extends Phaser.Scene {
       } else if (this.interface.score > 1000) {
         waves = HARD_WAVES
       }
-      console.log('end', this.interface.score, waves)
       this.waves = waves.map((wave) => sample(wave))
     }
 
