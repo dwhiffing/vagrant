@@ -1,4 +1,4 @@
-import { MOVE_TOWARD_TARGET, BLINK, SCORE_TEXT } from '../behaviors'
+import { MOVE_TOWARD_TARGET, BLINK, SCORE_TEXT, EXPLODE } from '../behaviors'
 
 export class Bot extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -20,7 +20,6 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     this.power = 0
     this.hitSound = scene.sound.add('botHit1', { volume: 2 })
     this.hitShieldSound = scene.sound.add('shieldHit1', { volume: 2 })
-    this.deathSound = scene.sound.add('death', { volume: 3 })
 
     scene.behavior.enable(this)
     this.behaviors.set('moveTowardMouse', MOVE_TOWARD_TARGET, {
@@ -29,6 +28,15 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
       turnRate: 1000,
     })
     this.behaviors.set('blink', BLINK)
+    this.behaviors.set('explode', EXPLODE, {
+      getTargets: () => [],
+      explosionDamage: 0,
+      explosionDelay: 0,
+      triggerRadius: 0,
+      explosionKey: 'explosion-3',
+      explosionSound: 'death',
+      explosionRadius: 350,
+    })
     this.behaviors.set('scoreText', SCORE_TEXT)
   }
 
@@ -85,7 +93,6 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
   die() {
     this.emit('kill')
     this.scene.events.emit('loseLife')
-    this.deathSound.play()
     this.setActive(false)
     this.setVisible(false)
     this.shieldSprite.setActive(false)
