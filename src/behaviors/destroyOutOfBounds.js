@@ -13,7 +13,7 @@ export const DESTROY_OUT_OF_BOUNDS = {
       (vY < 0 && entity.y < -opts.range) ||
       (vY > 0 && entity.y > height + opts.range)
     if (one || two) {
-      entity.kill()
+      entity.kill({ silent: true })
     }
   },
 }

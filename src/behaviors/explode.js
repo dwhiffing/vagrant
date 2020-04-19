@@ -45,7 +45,9 @@ export const EXPLODE = {
       if (entity.explosionShake) {
         entity.scene.events.emit('shake', { type: 'small' })
       }
-      entity.explosionSound.play()
+      if (!opts.silent) {
+        entity.explosionSound.play()
+      }
       if (opts.shouldDamage) {
         entity
           .getTargets()

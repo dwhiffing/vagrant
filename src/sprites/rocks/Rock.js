@@ -89,9 +89,9 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  kill({ shouldDamage = false, triggerPowerup = false } = {}) {
+  kill({ shouldDamage = false, triggerPowerup = false, silent = false } = {}) {
     if (this.visible) {
-      this.emit('kill', { shouldDamage, triggerPowerup })
+      this.emit('kill', { shouldDamage, triggerPowerup, silent })
     }
     this.disableBody()
     this.setActive(false)
