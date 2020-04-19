@@ -31,13 +31,13 @@ const WAVES = [
   {
     rocks: [
       makeRandom({
-        waveDelay: 1000,
+        waveDelay: 1500,
         size: 8,
         type: 0,
         directions: ['t', 'b'],
       }),
       makeRandom({
-        waveDelay: 500,
+        waveDelay: 700,
         size: 10,
         type: 1,
         directions: ['t', 'b'],
@@ -49,7 +49,7 @@ const WAVES = [
   {
     rocks: [
       makeRandom({
-        waveDelay: 1000,
+        waveDelay: 1500,
         size: 20,
         type: 0,
         directions: ['tl', 'br'],
@@ -58,7 +58,7 @@ const WAVES = [
     missiles: [
       makeRandom({
         waveDelay: 2000,
-        size: 10,
+        size: 5,
         type: 1,
       }),
     ],
@@ -67,13 +67,13 @@ const WAVES = [
   {
     rocks: [
       makeRandom({
-        waveDelay: 1000,
+        waveDelay: 1500,
         size: 15,
         type: 0,
         directions: ['l', 'r'],
       }),
       makeRandom({
-        waveDelay: 600,
+        waveDelay: 800,
         size: 20,
         type: 1,
         directions: ['l', 'r'],
@@ -90,14 +90,14 @@ const EVENTS = [
   {
     rocks: [
       makeRandom({
-        waveDelay: 300,
-        size: 30,
+        waveDelay: 800,
+        size: 20,
         type: 1,
         directions: ['tl', 'tr', 'br', 'bl'],
       }),
       makeRandom({
-        waveDelay: 800,
-        size: 10,
+        waveDelay: 1000,
+        size: 15,
         type: 0,
         directions: ['l', 'r', 't', 'b'],
       }),

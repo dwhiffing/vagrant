@@ -60,7 +60,7 @@ export default class extends Phaser.Scene {
 
     this.sendNextWave()
     this.time.addEvent({
-      delay: 1000,
+      delay: 3000,
       callback: this.sendNextWave,
       callbackScope: this,
       loop: true,
@@ -135,7 +135,7 @@ export default class extends Phaser.Scene {
   sendNextWave() {
     if (
       this.missileGroup.getFirstAlive() ||
-      this.rockGroup.getChildren().filter((c) => c.active).length > 5
+      this.rockGroup.getChildren().filter((c) => c.active).length > 6
     ) {
       return
     }
