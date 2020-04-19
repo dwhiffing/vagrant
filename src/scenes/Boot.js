@@ -22,25 +22,16 @@ export default class extends Phaser.Scene {
 
     this.load.audio('game', 'assets/audio/game.mp3')
     this.load.audio('title', 'assets/audio/title.mp3')
-
     this.load.audio('placeMine', 'assets/audio/place-mine.mp3')
     this.load.audio('noMines', 'assets/audio/no-mines.mp3')
-
     this.load.audio('explosion1', 'assets/audio/explosion1.mp3')
     this.load.audio('explosion2', 'assets/audio/explosion2.mp3')
     this.load.audio('explosion3', 'assets/audio/explosion3.mp3')
-
     this.load.audio('botHit1', 'assets/audio/bot-hit1.mp3')
     this.load.audio('shieldHit1', 'assets/audio/shield-hit1.mp3')
     this.load.audio('death', 'assets/audio/death.mp3')
-
-    this.load.audio('enemyHit1', 'assets/audio/enemy-hit1.mp3') // TOOD: unused
-    this.load.audio('enemyHit2', 'assets/audio/enemy-hit2.mp3') // TOOD: unused
-    this.load.audio('enemyHit3', 'assets/audio/enemy-hit3.mp3') // TOOD: unused
-
     this.load.audio('itemAppears', 'assets/audio/powerup-appears.mp3')
     this.load.audio('itemPickup', 'assets/audio/powerup-starts.mp3')
-    this.load.audio('itemExpires', 'assets/audio/powerup-expires.mp3') // TODO: unused
 
     this.load.image('background', 'assets/images/background2.gif')
     this.load.image('bot', 'assets/images/ufoGreen.png')

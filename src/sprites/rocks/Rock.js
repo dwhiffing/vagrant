@@ -67,15 +67,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
       vY = speed
     }
     this.body.setVelocity(vX, vY)
-    // TODO: more control over this
-    this.body.angularVelocity = Phaser.Math.RND.pick([
-      100,
-      -100,
-      50,
-      -50,
-      25,
-      -25,
-    ])
+    this.body.angularVelocity = Phaser.Math.RND.pick([100, -100, 50, -50])
   }
 
   damage(amount, instakill = false, triggerPowerup = false) {

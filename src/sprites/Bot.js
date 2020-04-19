@@ -42,7 +42,6 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
   }
 
   heal(amount) {
-    // TODO: should heal shield as well
     this.health += amount
     if (this.health > 100) {
       this.health = 100
