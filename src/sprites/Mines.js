@@ -7,6 +7,7 @@ export class Mines extends Phaser.Physics.Arcade.Group {
     this.canLay = true
     this.placeSound = this.scene.sound.add('placeMine')
     this.noMinesSound = this.scene.sound.add('noMines')
+    this.mineCount = MAX_MINES
     this.createMultiple({
       frameQuantity: MAX_MINES,
       key: 'mine',
@@ -18,6 +19,10 @@ export class Mines extends Phaser.Physics.Arcade.Group {
         y: -100,
       },
     })
+    this.scene.events.on('mineExploded', () => {
+      this.mineCount++
+      this.scene.events.emit('mineCount', { amount: this.mineCount })
+    })
   }
 
   spawn(x, y) {
@@ -26,6 +31,10 @@ export class Mines extends Phaser.Physics.Arcade.Group {
       this.noMinesSound.play()
       return
     }
+
+    this.mineCount--
+
+    this.scene.events.emit('mineCount', { amount: this.mineCount })
 
     this.placeSound.play()
     this.canLay = false
@@ -48,7 +57,7 @@ export class Mines extends Phaser.Physics.Arcade.Group {
       mine.explosionShake = false
     }
     this.scene.time.addEvent({
-      delay: 500,
+      delay: 200,
       callback: () => (this.canLay = true),
     })
   }
@@ -83,6 +92,7 @@ class Mine extends Phaser.Physics.Arcade.Sprite {
 
   kill() {
     if (this.visible) {
+      this.scene.events.emit('mineExploded')
       this.emit('kill', { shouldDamage: true })
     }
     this.setActive(false)

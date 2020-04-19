@@ -45,7 +45,7 @@ export default class extends Phaser.Scene {
       this.add.sprite(width / 2, height / 2, 'bot').setScale(1.5)
 
     this.add
-      .sprite(width / 2, height - 380, 'button')
+      .sprite(width / 2, height - 420, 'button')
       .setScale(1.2)
       .setInteractive()
       .on('pointerdown', () => {

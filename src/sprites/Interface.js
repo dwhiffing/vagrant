@@ -1,6 +1,6 @@
 export class Interface {
   constructor(scene, lives, score) {
-    const { width } = scene.game.canvas
+    const { width, height } = scene.game.canvas
     this.lives = lives || 3
     this.scene = scene
     this.score = score || 0
@@ -85,6 +85,22 @@ export class Interface {
     this.life2.setDepth(10)
     this.life3.setDepth(10)
 
+    this.mines = []
+    for (let i = 0; i <= 4; i++) {
+      this.mines[i] = scene.add.image(
+        width / 2 + i * 80 - 210,
+        height - 120,
+        'mine',
+      )
+      this.mines[i].setScale(4).setOrigin(0).setDepth(10)
+    }
+
+    this.scene.events.on('mineCount', ({ amount = 5 }) => {
+      this.mines.forEach((mine, index) => {
+        mine.setAlpha(index < amount ? 1 : 0.2)
+      })
+    })
+
     this.scene.events.on('score', (opts) => {
       this.score += opts.amount
       if (this.scoreText.frame.data) {
@@ -94,7 +110,7 @@ export class Interface {
 
     this.scene.events.on('wave', (opts) => {
       if (this.waveText.frame.data) {
-        this.waveText.text = `${this.scene.totalWaves}`
+        this.waveText.text = `wave ${this.scene.totalWaves}`
       }
     })
 
@@ -147,7 +163,7 @@ export class Interface {
     this.scoreText.setOrigin(0.5, 0)
 
     this.waveText = scene.add
-      .text(width / 2, 90, this.scene.totalWaves, {
+      .text(width / 2, 90, 'wave:' + this.scene.totalWaves, {
         fontFamily: 'Space Mono',
         fontSize: 30,
         color: '#ffffff',
