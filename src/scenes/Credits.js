@@ -5,6 +5,7 @@ Tap with the other to lay mines.
         
 Your lives and health are at the top.
 Your ammo indicator is at the bottom.
+Mines will not explode while you are near.
 
 Items will be dropped by enemies;
 Collect them to get boosts or points.
@@ -76,18 +77,5 @@ export default class extends Phaser.Scene {
           this.scene.stop()
         }
       })
-
-    this.mute = this.add.image(
-      this.cameras.main.width - 150,
-      this.cameras.main.height - 150,
-      'icon',
-    )
-    this.mute.setOrigin(0)
-    this.mute.setFrame(1)
-    this.mute.setFrame(this.sound.mute ? 2 : 1)
-    this.mute.setInteractive().on('pointerdown', () => {
-      this.sound.mute = !this.sound.mute
-      this.mute.setFrame(this.sound.mute ? 1 : 2)
-    })
   }
 }
