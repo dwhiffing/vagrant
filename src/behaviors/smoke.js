@@ -15,6 +15,7 @@ export const SMOKE = {
     })
     entity.smoke.setBlendMode(Phaser.BlendModes.ADD)
     entity.smoke.startFollow(entity)
+    entity.smoke.stop()
     entity.on('spawn', () => entity.smoke.start())
     entity.on('kill', () => entity.smoke.stop())
     entity.on('stall', () => entity.smoke.stop())

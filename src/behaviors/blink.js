@@ -6,6 +6,7 @@ export const BLINK = {
     })
     entity.on('kill', () => {
       if (entity.blinkEvent) entity.blinkEvent.destroy()
+      entity.clearTint()
     })
     entity.on('blink', (opts = {}) => {
       let i = 0
@@ -13,8 +14,10 @@ export const BLINK = {
         delay: opts.blinkRate,
         repeat: opts.blinkRepeat,
         callback: () => {
-          if (i++ === opts.blinkRepeat) {
+          if (i++ === opts.blinkRepeat + 1) {
             opts.onBlinkComplete && opts.onBlinkComplete()
+            entity.clearTint()
+            return
           }
           if (opts.useAlpha) {
             entity.alpha = entity.alpha === 1 ? 0.2 : 1
