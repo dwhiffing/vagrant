@@ -42,6 +42,16 @@ export default class extends Phaser.Scene {
     this.music = this.sound.add('game', { loop: true, volume: 0.35 })
     this.music.play()
 
+    this.events.on('shake', ({ type = 'small' } = {}) => {
+      if (type === 'small') {
+        this.cameras.main.shake(200, 0.01)
+        navigator.vibrate(100)
+      } else if (type === 'medium') {
+        this.cameras.main.shake(300, 0.02)
+        navigator.vibrate(200)
+      }
+    })
+
     this.sendNextWave()
     this.time.addEvent({
       delay: 2000,

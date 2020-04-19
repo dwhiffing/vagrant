@@ -1,8 +1,9 @@
 export class Background extends Phaser.GameObjects.TileSprite {
   constructor(scene, width, height) {
-    super(scene, width / 2, height / 2, width, height, 'background')
+    super(scene, -100, -100, width + 200, height + 200, 'background')
     this.setActive(true)
     this.setVisible(true)
+    this.setOrigin(0)
     this.tileScaleX = 3.5
     this.tileScaleY = 3.5
     this.iter = 0

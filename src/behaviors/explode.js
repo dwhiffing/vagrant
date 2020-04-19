@@ -42,6 +42,9 @@ export const EXPLODE = {
         entity.y,
         Math.max(4, (entity.explosionRadius || 30) / 30),
       )
+      if (entity.explosionShake) {
+        entity.scene.events.emit('shake', { type: 'small' })
+      }
       entity.explosionSound.play()
       if (opts.shouldDamage) {
         entity

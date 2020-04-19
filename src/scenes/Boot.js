@@ -31,8 +31,7 @@ export default class extends Phaser.Scene {
     this.load.audio('explosion3', 'assets/audio/explosion3.mp3')
 
     this.load.audio('botHit1', 'assets/audio/bot-hit1.mp3')
-    this.load.audio('botHit2', 'assets/audio/bot-hit2.mp3') // TOOD: unused
-    this.load.audio('botHit3', 'assets/audio/bot-hit3.mp3') // TOOD: unused
+    this.load.audio('shieldHit1', 'assets/audio/shield-hit1.mp3')
     this.load.audio('death', 'assets/audio/death.mp3')
 
     this.load.audio('enemyHit1', 'assets/audio/enemy-hit1.mp3') // TOOD: unused

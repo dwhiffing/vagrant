@@ -19,8 +19,7 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     this.shield = 0
     this.power = 0
     this.hitSound = scene.sound.add('botHit1', { volume: 2 })
-    this.hitSound2 = scene.sound.add('botHit2', { volume: 2 })
-    this.hitSound3 = scene.sound.add('botHit3', { volume: 2 })
+    this.hitShieldSound = scene.sound.add('shieldHit1', { volume: 2 })
     this.deathSound = scene.sound.add('death', { volume: 3 })
 
     scene.behavior.enable(this)
@@ -63,15 +62,17 @@ export class Bot extends Phaser.Physics.Arcade.Sprite {
     if (!this.invulnerable && this.active) {
       if (this.shield > 0) {
         this.shield -= damage
+        this.hitShieldSound.play()
       } else {
+        this.scene.events.emit('shake', { type: 'small' })
         this.health -= damage
+        this.hitSound.play()
       }
       if (this.shield <= 0) {
         this.shield = 0
         this.shieldSprite.setActive(false)
         this.shieldSprite.setVisible(false)
       }
-      this.hitSound.play()
       if (this.health <= 0) {
         this.health = 0
         this.die()
