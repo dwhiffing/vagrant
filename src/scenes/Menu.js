@@ -51,7 +51,9 @@ export default class extends Phaser.Scene {
       .on('pointerdown', () => {
         this.music.stop()
         this.scene.start('Game', { lives: 3 })
-        if (!this.sys.game.device.os.desktop) this.scale.startFullscreen()
+        if (/Mobi/.test(navigator.userAgent)) {
+          this.scale.startFullscreen()
+        }
       })
 
     this.add
@@ -60,7 +62,9 @@ export default class extends Phaser.Scene {
       .setFrame(1)
       .setInteractive()
       .on('pointerdown', () => {
-        if (!this.sys.game.device.os.desktop) this.scale.startFullscreen()
+        if (/Mobi/.test(navigator.userAgent)) {
+          this.scale.startFullscreen()
+        }
         this.scene.launch('Credits')
       })
 
