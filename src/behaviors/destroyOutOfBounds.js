@@ -1,6 +1,6 @@
 export const DESTROY_OUT_OF_BOUNDS = {
   options: {
-    range: 120,
+    range: 300,
   },
   update: (entity, opts) => {
     if (!entity.active) return

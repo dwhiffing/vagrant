@@ -1,9 +1,10 @@
-add more wave types and balance
-Balance missile and rock stats
+balanced waves and rock/missile types
+fix bug with blink staying active on new rockets and smoke staying after death
+credits
+instructions
+better mobile controls
 
-fix bug with blink staying active on new rockets
 extra life at 10k points?
-
 big rocks should split into smaller rocks on destroy?
 add score multiplier?
 vary score text size.etc based on score amount?

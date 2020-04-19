@@ -44,14 +44,30 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
     })
   }
 
-  spawn(x, y) {
+  spawn(x, y, params = {}) {
     this.health = this.opts.health
     this.setActive(true)
     this.setVisible(true)
     this.body.reset(x, y)
     this.enableBody()
     const speed = this.opts.speed
-    this.body.setVelocity(x < 0 ? speed : -speed, 0)
+    let vX = 0
+    let vY = 0
+    this.direction = params.direction || 'r'
+    if (this.direction.match(/l/)) {
+      vX = -speed
+    }
+    if (this.direction.match(/r/)) {
+      vX = speed
+    }
+    if (this.direction.match(/t/)) {
+      vY = -speed
+    }
+    if (this.direction.match(/b/)) {
+      vY = speed
+    }
+    this.body.setVelocity(vX, vY)
+    // TODO: more control over this
     this.body.angularVelocity = Phaser.Math.RND.pick([
       100,
       -100,
