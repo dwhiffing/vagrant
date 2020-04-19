@@ -1,7 +1,7 @@
 import { SMOKE_TYPES } from '../../behaviors/smoke'
 
 export const BASE = {
-  score: 10,
+  score: 25,
   health: 20,
   frame: 0,
   scale: 2,
@@ -31,7 +31,7 @@ export const TYPES = {
     frame: 3,
     scale: 1,
     health: 10,
-    score: 20,
+    score: 50,
     turnRate: 10,
     triggerRadius: 50,
     explosionRadius: 50,
@@ -46,7 +46,7 @@ export const TYPES = {
     health: 60,
     turnRate: 1.7,
     scale: 4,
-    score: 50,
+    score: 100,
     wobbleLimit: 35,
     wobbleSpeed: 2000,
     stallTimeout: 300,

@@ -9,7 +9,7 @@ export class Mines extends Phaser.Physics.Arcade.Group {
     this.noMinesSound = this.scene.sound.add('noMines')
     this.mineCount = MAX_MINES
     this.createMultiple({
-      frameQuantity: MAX_MINES,
+      frameQuantity: 10,
       key: 'mine',
       active: false,
       visible: false,

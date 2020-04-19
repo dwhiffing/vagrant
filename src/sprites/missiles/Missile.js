@@ -100,7 +100,7 @@ export class Missile extends Phaser.Physics.Arcade.Sprite {
       this.emit('scoreText')
       this.scene.events.emit('score', { amount: this.score })
 
-      if (instakill || Math.random() > 0.5) {
+      if (instakill || Math.random() > 0.33) {
         this.kill({ triggerPowerup })
         return
       }

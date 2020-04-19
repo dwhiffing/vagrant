@@ -1,5 +1,5 @@
 export const BASE = {
-  score: 10,
+  score: 15,
   health: 20,
   frame: 1,
   scale: 1.5,
@@ -30,7 +30,7 @@ export const TYPES = {
     ...BASE,
     health: 40,
     speed: 50,
-    score: 50,
+    score: 75,
     triggerRadius: 120,
     explosionRadius: 120,
     explosionDamage: 30,
